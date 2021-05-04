@@ -1,0 +1,8 @@
+<% if logged_in? %>
+    Welcome, <%= current_user.username %>.
+    <a href="/products/new">Add To Current Bar Inventory</a>
+    <a href="/products/show">See My Current Bar Inventory</a>
+    <a href="/logout">Sign Out</a>
+<% else %>
+    Please <a href="/signup">Sign Up</a> or <a href="/login">Log In</a> to continue.
+<% end %>
