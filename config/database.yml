@@ -5,6 +5,3 @@ default: &default
 development:
   <<: *default
 
-test:
-  <<: *default
-  database: 'db/test.sqlite'
