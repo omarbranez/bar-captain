@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
     has_secure_password
-    has_one :menu
     validates_uniqueness_of(:username)
+    has_many :products
+    has_many :drinks, through: :products
 
     def slug
         username.downcase.gsub(" ", "-")

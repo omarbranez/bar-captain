@@ -13,5 +13,7 @@ gem 'bcrypt'
 gem "tux"
 gem 'sinatra-flash'
 gem 'bootstrap'
-
-
+gem 'dead_end'
+gem 'kimurai'
+gem 'mechanize'
+gem 'dotenv'
