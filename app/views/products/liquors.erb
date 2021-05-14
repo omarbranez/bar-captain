@@ -1,0 +1,19 @@
+<h2>Let's Stock Up!</h2>
+<p>What type of <%= params[:liquors][:category] %> is it?</p>
+
+<form action="/products" method="POST">
+        <div>
+        <label for="product_select">Name of Product</label>
+        <select name="category[name]" id="product-select">
+                <option value="">Please select what type of <%= params[:liquors][:category] %> you're adding</option>
+                <% @nliquors.each do |dbproduct| %>
+                        <option value="<%= dbproduct.name %>" name="name"><%= dbproduct.name %></option>
+                <% end %>           
+        </select>
+               
+
+
+        <input type="submit" value="submit">
+        
+        </form>
+</body>

@@ -28,23 +28,24 @@ drink_data.first[1].each do |drink|
         drink_hash[:quantity6] = d_detail["strMeasure6"]
         drink_hash[:quantity7] = d_detail["strMeasure7"]
         drink_hash[:quantity8] = d_detail["strMeasure8"]
-        Drink.where(drink_hash).first_or_create
+        DrinksDB.where(drink_hash).first_or_create
     end
 end
 
 agent_3 = Mechanize.new
-product_page = agent_3.get("https://www.thecocktaildb.com/api/json/v2/ENV["API_KEY"]/list.php?i=list")
+product_page = agent_3.get("https://www.thecocktaildb.com/api/json/v2/#{ENV["API_KEY"]}/list.php?i=list")
 product_data = JSON.parse(product_page.body)
 product_data.first[1].each do |product|
     product_hash = {}   
     product_hash[:name] = product["strIngredient1"]
     agent_4 = Mechanize.new
-    product_detail_page = agent_4.get("https://www.thecocktaildb.com/api/json/v2/ENV["API_KEY"]/search.php?i=#{product["strIngredient"]}")
+    product_detail_page = agent_4.get("https://www.thecocktaildb.com/api/json/v2/#{ENV["API_KEY"]}/search.php?i=#{product["strIngredient1"]}")
     product_detail = JSON.parse(product_detail_page.body)
     product_detail.first[1].each do |p_detail|
+        # binding.pry
         product_hash[:category] = p_detail["strType"]
         product_hash[:description] = p_detail["strDescription"]
-        p_detail["strAlcohol"] == "Yes" ? product_hash[:description] = "Liquor" : product_hash[:description] = "Mixer"
-        Product.where(product_hash).first_or_create
+        p_detail["strAlcohol"] != "Yes" ? product_hash[:subcategory] = "Mixer" : product_hash[:subcategory] = ""
+        ProductsDB.where(product_hash).first_or_create
     end
 end

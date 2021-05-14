@@ -1,21 +1,17 @@
 <h2>Let's Stock Up!</h2>
 <p>What type of Product is it?</p>
 
-<form action="/products" method="POST">
+<form action="/liquors">
+<input type="hidden" name="params[:liquors][:category]" value="liquors">
         <div>
-        <label for="liquor">Liquor</label>
-        <input type="radio" id="liquor" name="liquor" value="products[type: liquor]">
-        </div>
-        <div>
-        <label for="wine">Wine</label>
-        <input type="radio" id="wine" name="wine" value="products[type: wine]">
-        <div>
-        </div>
-        <label for="beer">Beer</label>
-        <input type="radio" id="beer" name="beer" value="products[type: beer]">
-        </div>
-        <label for="mixer">Mixer</label>
-        <input type="radio" id="mixer" name="mixer" value="products[type: mixer]">
-        </div>
+        <label for="liquor_select">Liquor Type</label>
+        <select name="liquors[category]" id="category-select">
+                <option value="">Please select a type of liquor</option>
+                <% @liquors.each do |dbproduct| %>
+                        <option value="<%= dbproduct.category %>" name="type"><%= dbproduct.category %></option>
+                <% end %>           
+        </select>
+        <input type="submit" value="submit">
+        
         </form>
 </body>

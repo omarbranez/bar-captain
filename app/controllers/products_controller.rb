@@ -5,30 +5,56 @@ class ProductsController < ApplicationController
         erb :'products/index'
     end
 
-    get '/products/new' do
+    get '/liquors/new' do
         redirect_if_not_logged_in
-        erb :'products/new'
+        @liquors = ProductsDB.where("subcategory = 'Liquor'").select(:category).distinct
+        erb :'products/liquors'
+        # ProductsDB.all.map {|productdb| productdb[:category]}
+        # @dbproducts.map {|d| d.category}.uniq.compact
+        # <% dbproducts = ProductsDB.where("subcategory = ''").select(:category).distinct %>
+        # binding.pry
     end
     
     get '/products/:id' do
         redirect_if_not_logged_in
-        @products = Product.find_by_user(user: params[:id])
+        @liquors = Product.find_by_user(user: params[:id])
         if @products.user == current_user
             erb :'products/show'
         end # see if this returns that user's products only
     end
 
     post '/products' do
-        if params[:category] == "" || params[:subcategory] == "" || params[:quantity] == ""
-            flash[:message] = "Please fill in all fields"
-            redirect '/addproducts'
-        else
-            @product = Product.create(params[:product])
-            @product = current_user.products.create(category: params[:product][:category], subcategory: params[:product][:subcategory], quantity: params[:product][:quantity])
-            @product.save
-            redirect to '/products' # find way to add multiple items at once per post request instead of making them click 20 times
-        end
+        redirect_if_not_logged_in
+        # binding.pry
+        # @liquor_type = params[:liquors][:category]
+        
+        # @product = Product.create(params[:product])
+        # @product = current_user.products.create(products_db_id)
+        # @product.save
+        redirect '/liquors' # find way to add multiple items at once per post request instead of making them click 20 times
     end
+
+    get '/liquors' do
+        redirect_if_not_logged_in
+        @nliquors = ProductsDB.where("category = ?", params[:liquors][:category]).select(:name)
+        binding.pry
+        erb :'products/liquors'
+    end
+
+    post '/liquors' do
+        redirect_if_not_logged_in
+        @nliquors = ProductsDB.where("category = ?", params[:liquors][:category]).select(:name)
+        
+        binding.pry
+    end
+        # @products = ProductsDB.all
+        #     if params[:search]
+        #         @products = ProductsDB.search(params[:search]).order("created_at DESC")
+        #     else
+        #         @products = ProductsDB.all.order('created_at DESC')
+        #     end
+        # end
+
 
     get '/products/:id/edit' do
         redirect_if_not_logged_in
@@ -43,7 +69,7 @@ class ProductsController < ApplicationController
             @products = Product.find_by_user(user: params[:id])
             redirect_if_not_owner(@products)
             if @products && @products.user == current_user
-                @products.update(category: params[:product][:category], subcategory: params[:product][:subcategory], quantity: params[:product][:quantity])
+                @products.update(category: params[:product][:category])
                 redirect to "/products/#{@products.id}"
             end
         end

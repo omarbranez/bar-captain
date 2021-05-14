@@ -10,18 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_11_154656) do
+ActiveRecord::Schema.define(version: 2021_05_14_211637) do
 
   create_table "drink_products", force: :cascade do |t|
     t.integer "drink_id"
     t.integer "product_id"
-  end
+  end # might end up not using this
 
   create_table "drinks", force: :cascade do |t|
-    t.integer "drinks_db_id"
-  end
-
-  create_table "drinks_db", force: :cascade do |t|
     t.string "name"
     t.string "drink_type"
     t.string "glass_type"
@@ -43,25 +39,28 @@ ActiveRecord::Schema.define(version: 2021_05_11_154656) do
     t.string "quantity8"
     t.text "instructions"
     t.string "photo_url"
-    t.boolean "makeable"
   end
 
   create_table "products", force: :cascade do |t|
-    t.integer "products_db_id"
-  end
-
-  create_table "products_db", force: :cascade do |t|
     t.string "category"
     t.string "subcategory"
     t.text "description"
-    t.boolean "owned"
     t.string "name"
+  end
+
+  create_table "user_drinks", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "drinks_id"
+  end
+
+  create_table "user_products", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "product_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
-    t.integer "drink_id"
   end
 
 end
