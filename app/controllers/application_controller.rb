@@ -1,8 +1,10 @@
 require './config/environment'
 require 'sinatra'
+require 'sinatra/base'
 require 'sinatra/flash'
-class ApplicationController < Sinatra::Base
 
+
+class ApplicationController < Sinatra::Base
     configure do
         set :public_folder, 'public'
         set :views, 'app/views'
@@ -12,7 +14,7 @@ class ApplicationController < Sinatra::Base
     end
 
     get '/' do
-        flash[:notice] = "Hooray, Flash is working!"
+        flash[:notice] = "Sign In to Get Your Drink On, or Sign Up to Look Bougie AF!"
         erb :index
     end
 
@@ -43,6 +45,10 @@ class ApplicationController < Sinatra::Base
                 flash[:notice] = "Moe Szyzlak is pulling out his shotgun..."
                 redirect '/products'
             end
+        end
+
+        def save_value
+            # product model instead?
         end
     end
 

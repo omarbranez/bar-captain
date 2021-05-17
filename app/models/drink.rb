@@ -3,4 +3,7 @@ class Drink < ActiveRecord::Base
     has_many :users, through: :user_drinks
     has_many :drink_products
     has_many :products, through: :drink_products
+
+    def self.create_drinks
+    end
 end

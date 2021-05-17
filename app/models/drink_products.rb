@@ -1,4 +1,4 @@
-class DrinkProducts < ActiveRecord::Base
+class DrinkProduct < ActiveRecord::Base
     belongs_to :drink
     belongs_to :product 
 end

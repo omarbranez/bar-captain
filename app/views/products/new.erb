@@ -1,17 +1,126 @@
-<h2>Let's Stock Up!</h2>
-<p>What type of Product is it?</p>
+<!DOCTYPE html>
 
-<form action="/liquors">
-<input type="hidden" name="params[:liquors][:category]" value="liquors">
-        <div>
-        <label for="liquor_select">Liquor Type</label>
-        <select name="liquors[category]" id="category-select">
-                <option value="">Please select a type of liquor</option>
-                <% @liquors.each do |dbproduct| %>
-                        <option value="<%= dbproduct.category %>" name="type"><%= dbproduct.category %></option>
-                <% end %>           
-        </select>
-        <input type="submit" value="submit">
-        
-        </form>
+<html>
+<h2>Lets Stock Up!</h2>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f1f1f1;
+}
+
+#new_user_product {
+  background-color: #ffffff;
+  margin: 100px auto;
+  font-family: Raleway;
+  padding: 40px;
+  width: 70%;
+  min-width: 300px;
+}
+
+h1 {
+  text-align: center;  
+}
+
+input {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+/* Hide all steps by default: */
+.tab {
+  display: none;
+}
+
+button {
+  background-color: #04AA6D;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: Raleway;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+#prevBtn {
+  background-color: #bbbbbb;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;  
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+</style>
+<body onload="show_form(1)">
+
+<form id="new_user_product" name="product" action="/products" method="POST">
+  <h1>What are you adding?:</h1>
+ 
+  <div id="form_1">
+        <input type="button" id="liquor_button" value="Liquor" onclick="show_form(2)">
+        <input type="button" id="mixer_button" value="Mixer" onclick="show_form(4)">
+  </div>
+  
+  <div id="form_2">
+        <% @liquor_categories.each do |liquor| %>
+                <input type="button" id="<%= liquor.category %>" value="<%= liquor.category %>" onclick="show_form(3)" name="product[category][]">
+        <% end %> 
+  </div>
+  <div id="form_3">
+        <% @liquor_names.each do |liquor| %>
+                <input type="submit" id="<%= liquor.name %>" value="<%= liquor.name %>" name="product[name]"><br><br>
+        <% end %>            
+               
+  </div>
+  <div id="form_4">
+        <% @mixer_names.each do |mixer| %>
+                <input type="submit" id="<%= mixer.name %>" value="<%= mixer.name %>" name="product[name]"><br>
+        <% end %>
+  </div>
+
+</form>
+
+<script>
+function show_form(n){
+    var i = 1, p = document.getElementById("form_"+1);
+    while (p !== null){
+        if (i === n){
+            p.style.display = "";
+        }
+        else{
+            p.style.display = "none";
+        }
+        i++;
+        p = document.getElementById("form_"+i);
+    }
+}
+</script>
+
 </body>
+</html>
+

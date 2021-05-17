@@ -28,7 +28,7 @@ drink_data.first[1].each do |drink|
         drink_hash[:quantity6] = d_detail["strMeasure6"]
         drink_hash[:quantity7] = d_detail["strMeasure7"]
         drink_hash[:quantity8] = d_detail["strMeasure8"]
-        DrinksDB.where(drink_hash).first_or_create
+        Drinks.where(drink_hash).first_or_create
     end
 end
 
@@ -46,6 +46,30 @@ product_data.first[1].each do |product|
         product_hash[:category] = p_detail["strType"]
         product_hash[:description] = p_detail["strDescription"]
         p_detail["strAlcohol"] != "Yes" ? product_hash[:subcategory] = "Mixer" : product_hash[:subcategory] = ""
-        ProductsDB.where(product_hash).first_or_create
+        Product.where(product_hash).first_or_create
     end
 end
+
+Drink.all.each do |drink|
+    drink.ingredient1 = drink.ingredient1.titleize
+    drink.ingredient2 = drink.ingredient2.titleize
+    drink.ingredient3 = drink.ingredient3.titleize
+    drink.ingredient4 = drink.ingredient4.titleize
+    drink.ingredient5 = drink.ingredient5.titleize
+    drink.ingredient6 = drink.ingredient6.titleize
+    drink.ingredient7 = drink.ingredient7.titleize
+    drink.ingredient8 = drink.ingredient8.titleize
+    drink.save
+    # names or quantities do not need to be titleized
+    # need to account for nulls in database, as null cannot be titleized
+    # conditional drink.ingredientX.present?
+end
+
+Product.all.each do |product|
+    if product.name.present?
+        product.name = product.name.titleize
+        product.save
+    end
+end
+
+#these will be moved to the scraper

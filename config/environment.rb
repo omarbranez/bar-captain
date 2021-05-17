@@ -4,9 +4,6 @@ require 'bundler/setup'
 Bundler.require(:default, ENV['SINATRA_ENV'])
 Dotenv.load
 
-configure :development do
-  set :database, 'sqlite3:db/database.db'
-end
 
 ActiveRecord::Base.establish_connection(
   :adapter => "sqlite3",
@@ -15,5 +12,6 @@ ActiveRecord::Base.establish_connection(
 
 require './app/controllers/application_controller'
 require 'sinatra/flash'
+# require 'sinatra/contrib'
 
 require_all 'app'
