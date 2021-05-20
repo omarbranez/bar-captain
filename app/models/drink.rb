@@ -4,6 +4,12 @@ class Drink < ActiveRecord::Base
     has_many :drink_products
     has_many :products, through: :drink_products
 
-    def self.create_drinks
+    def slug
+        name.downcase.gsub(" ", "-")
     end
+
+    def self.find_by_slug(slug)
+        Drink.all.find {|drink| drink.slug == slug }
+    end
+
 end

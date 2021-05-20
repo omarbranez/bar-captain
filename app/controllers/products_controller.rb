@@ -4,30 +4,21 @@ class ProductsController < ApplicationController
         redirect_if_not_logged_in
         @user = User.find(session[:user_id])
         redirect "/products/#{@user.id}"
+
     end
 
     get '/products/new' do
         redirect_if_not_logged_in
         @products = Product.all
         @liquor_categories = Product.where(subcategory: 'Liquor').select(:category).distinct
-        @liquor_names = Product.where(category: 'Vodka').select(:name)
+        @liquor_names = Product.where(category: params[:category]).select(:name) # default to vodka, for testing
         @mixer_names = Product.where(subcategory: 'Mixer').select(:name)
         erb :'products/new'
         # ids via here, then call their names as values
-    end
-
-    get '/liquors' do
-        erb :'products/liquors'
-    end
-
-    get '/mixers' do
-        erb :'products/mixers'
-    end
-    
+    end    
 
     post '/products' do
         redirect_if_not_logged_in
-        # binding.pry
         user_products = current_user.user_products
         @product = Product.find_by(name: params[:product][:name])
         if !!user_products.find_by(product_id: Product.find_by(name: params[:product][:name]))
@@ -44,7 +35,6 @@ class ProductsController < ApplicationController
 
     get '/products/success' do
         redirect_if_not_logged_in
-        # binding.pry
         @last_product = Product.find(current_user.user_products.last.product_id).name
         erb :'products/success'
     end
@@ -52,19 +42,19 @@ class ProductsController < ApplicationController
     get '/products/:id' do
         redirect_if_not_logged_in
         @userproducts = UserProduct.where(user_id: current_user.id)
-        # binding.pry
         erb :'products/show'
              # see if this returns that user's products only
+                     # will change to slugs
     end        
 
 
-    get '/products/:id/edit' do
+    get '/products/:id/edit' do # untested
         redirect_if_not_logged_in
         @myproducts = UserProduct.find_by_user(user: params[:id])
         erb :'products/edit'
     end
 
-    patch '/products/:id' do
+    patch '/products/:id' do # untested
         if params[:product] == ""
             redirect to "/products/#{params[:id]}/edit"
         else
@@ -77,7 +67,7 @@ class ProductsController < ApplicationController
         end
     end
 
-    delete '/products/:id/delete' do
+    delete '/products/:id/delete' do # untested
         @product = Product.find_by_user(params[:id])
         redirect_if_not_owner
         if @product && @product.user == current_user

@@ -1,1 +1,6 @@
 .env
+/app/views/products/product.js.coffee
+/public/javascripts/product.js.coffee
+/public/javascripts/script.js.coffee
+/config/database.yml
+/app/views/products/_product.erb

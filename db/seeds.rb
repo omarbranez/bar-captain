@@ -1,3 +1,5 @@
+# scrapes drink information from thecocktaildb
+# need to move ingredient quantities to drink_products to eliminate those 16 columns
 agent_1 = Mechanize.new
 drink_page = agent_1.get("https://www.thecocktaildb.com/api/json/v2/ENV["API_KEY"]]/filter.php?a=Alcoholic")
 drink_data = JSON.parse(drink_page.body)
@@ -31,6 +33,8 @@ drink_data.first[1].each do |drink|
         Drinks.where(drink_hash).first_or_create
     end
 end
+
+# scrapes product information
 
 agent_3 = Mechanize.new
 product_page = agent_3.get("https://www.thecocktaildb.com/api/json/v2/#{ENV["API_KEY"]}/list.php?i=list")
@@ -71,5 +75,3 @@ Product.all.each do |product|
         product.save
     end
 end
-
-#these will be moved to the scraper

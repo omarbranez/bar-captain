@@ -2,7 +2,8 @@ require './config/environment'
 require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/flash'
-
+require 'sinatra/respond_with'
+# require_relative 'models/user_drink.rb'
 
 class ApplicationController < Sinatra::Base
     configure do
@@ -11,6 +12,7 @@ class ApplicationController < Sinatra::Base
         enable :sessions
         set :session_secret, ENV["SESSION_SECRET"]
         register Sinatra::Flash
+        register Sinatra::RespondWith
     end
 
     get '/' do
@@ -47,9 +49,6 @@ class ApplicationController < Sinatra::Base
             end
         end
 
-        def save_value
-            # product model instead?
-        end
     end
 
 end
