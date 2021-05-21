@@ -1,4 +1,5 @@
-Here are the possible drinks you can make!
-<% @drinks.each do |drink| %>
-    <li><%= drink.name %></li>
+Based on your inventory, you can make <%= @user_drinks.size %> drinks from our database! 
+Click on a drink to get more information and instructions on how to make it.
+<% @user_drinks.each do |drink| %>
+    <li><a href="/drinks/<%= drink.slug %>"><%= drink.name %></a></li>   
 <% end %>

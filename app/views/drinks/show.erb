@@ -1,4 +1,21 @@
-<img src="<%= @drink.photo_url %>">
+<style>
+img {
+    width: 30%;
+    height: auto;
+    position: relative;
+}
+</style>
+<body>
+<img src="<%= @drink_products.first.drink.photo_url %>" alt= <% @drink_products.first.drink.name%>>
 
-<li><%= drink.name %></li>
+<h3><%= @drink_products.first.drink.name %></h3>
+<%= @drink_products.first.drink.drink_type %><br>
+Served in a: <%= @drink_products.first.drink.glass_type %>
+<h4>Recipe:</h4>
+<% @drink_products.each do |dp| %>
+    <li><%= dp.product.name %></li>
+    <% end %>
+<h4>Instructions:</h4>
+<%= @drink_products.first.drink.instructions %>
 
+</body>

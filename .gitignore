@@ -4,3 +4,4 @@
 /public/javascripts/script.js.coffee
 /config/database.yml
 /app/views/products/_product.erb
+/db/development.sqlite

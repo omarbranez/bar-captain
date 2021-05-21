@@ -18,6 +18,7 @@ class ProductsController < ApplicationController
     end    
 
     post '/products' do
+        # maybe a confirm save flash message? that way we only query once and we can track when to generate drinks
         redirect_if_not_logged_in
         user_products = current_user.user_products
         @product = Product.find_by(name: params[:product][:name])
