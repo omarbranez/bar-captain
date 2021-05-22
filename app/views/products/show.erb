@@ -1,5 +1,9 @@
-Welcome, <%= current_user.username %>
-Here is your current inventory:
-<% @userproducts.each do |userproduct| %>
-    <li><%= userproduct.product.name %> </li>
+<h3><%= @product.name %></h3>
+<%= @product.category %><br>
+<% if @product.description %>
+    <h4>Description:</h4>
+    <%= @product.description %></li>
+<% else %>
+    <p>No description has been written for <%= @product.name %>. Would you like to write one?
 <% end %>
+

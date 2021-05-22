@@ -2,8 +2,11 @@ class ProductsController < ApplicationController
     
     get '/products' do
         redirect_if_not_logged_in
-        @user = User.find(session[:user_id])
-        redirect "/products/#{@user.id}"
+        @user_products = current_user.products
+        binding.pry
+        erb :'/products/index'
+        # these will be changed to have the slug first
+        # only the user sees these
 
     end
 
@@ -20,8 +23,10 @@ class ProductsController < ApplicationController
     post '/products' do
         # maybe a confirm save flash message? that way we only query once and we can track when to generate drinks
         redirect_if_not_logged_in
-        user_products = current_user.user_products
+        redirect_if_not_owner # check order of statements in testing
+        user_products = current_user.user_products # we are only creating the record in user_products, not products
         @product = Product.find_by(name: params[:product][:name])
+        # would search be faster if id and not name?
         if !!user_products.find_by(product_id: Product.find_by(name: params[:product][:name]))
             flash[:notice] = "Error: #{params[:product][:name]} already exists in your inventory."
             redirect '/products/new'
@@ -36,22 +41,25 @@ class ProductsController < ApplicationController
 
     get '/products/success' do
         redirect_if_not_logged_in
-        @last_product = Product.find(current_user.user_products.last.product_id).name
+        redirect_if_not_owner()
+        @last_product = current_user.products.last.name
         erb :'products/success'
     end
 
-    get '/products/:id' do
+    get '/products/:slug' do
         redirect_if_not_logged_in
-        @userproducts = UserProduct.where(user_id: current_user.id)
+        @product = Product.find_by_slug(params[:slug])
         erb :'products/show'
-             # see if this returns that user's products only
-                     # will change to slugs
+        # returns specific product
+        # need all columns
+        # will make directory as a quick add thing!
     end        
 
 
     get '/products/:id/edit' do # untested
         redirect_if_not_logged_in
-        @myproducts = UserProduct.find_by_user(user: params[:id])
+        @user_products = current_user.products
+        # will only need id, name, category, subcategory columns
         erb :'products/edit'
     end
 

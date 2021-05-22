@@ -42,9 +42,8 @@ class ApplicationController < Sinatra::Base
             end
         end
 
-        def redirect_if_not_owner(menu)
-            if menu_id && menu_id.user != current_user
-                flash[:notice] = "Moe Szyzlak is pulling out his shotgun..."
+        def redirect_if_not_owner(current_class)
+            if current_class.user != current_user
                 redirect '/products'
             end
         end
