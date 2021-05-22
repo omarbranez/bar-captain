@@ -8,7 +8,7 @@ class DrinksController < ApplicationController
         # @my_drinks.create_drinks # perhaps goes in bartender class? or in products controller in "new" route.
         # also want to see if any changes were made before we query again
         @user_drinks = current_user.drinks
-        @random_drink = Drink.order('RAND()').first
+        @random_drink = Drink.offset(rand(557)).first
         # just to add to the page, since it's mostly unused space pre-css'ing
         erb :'drinks/index'
         # binding.pry

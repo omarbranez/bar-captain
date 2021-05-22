@@ -3,3 +3,5 @@ Click on a drink to get more information and instructions on how to make it.
 <% @user_drinks.each do |drink| %>
     <li><a href="/drinks/<%= drink.slug %>"><%= drink.name %></a></li>   
 <% end %>
+
+<%= @random_drink.name %>

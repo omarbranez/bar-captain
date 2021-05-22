@@ -4,8 +4,10 @@ Here is your current inventory. Click on the name to get more information!
     <li><a href="/products/<%= product.slug %>"><%= product.name %></li>
 <% end %>
 
-To see what you can make with these items, go <a href="/drinks">here!</a>
+To see what you can make with these items, go <a href="/drinks">here!</a><br>
 <a href="/products/new">Add Something To My Bar Inventory</a><br>
 <a href="/products/edit">Edit My Bar Inventory</a><br>
 <a href="/drinks">See My Drink Options</a><br>
 <a href="/drinks/search">Search for a Specific Drink</a><br>
+
+<%= @random_product.name %>
