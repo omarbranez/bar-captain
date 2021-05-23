@@ -3,7 +3,7 @@ require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/flash'
 require 'sinatra/respond_with'
-# require_relative 'models/user_drink.rb'
+require 'sinatra/partial'
 
 class ApplicationController < Sinatra::Base
     configure do
@@ -13,6 +13,9 @@ class ApplicationController < Sinatra::Base
         set :session_secret, ENV["SESSION_SECRET"]
         register Sinatra::Flash
         register Sinatra::RespondWith
+        register Sinatra::Partial
+        set :partial_template_engine, :erb
+        enable :partial_underscores
     end
 
     get '/' do

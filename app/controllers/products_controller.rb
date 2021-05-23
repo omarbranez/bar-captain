@@ -5,47 +5,66 @@ class ProductsController < ApplicationController
         @user_products = current_user.products
         @random_product = Product.offset(rand(489)).first # this is 3x as fast as Product.all.order(Arel.sql('random()'))
         #but might have to be Product.offset(rand(Product.select(:id).count) if we add new products (or drinks, later)
-        binding.pry
+        # or find_one()
+        # binding.pry
         erb :'/products/index'
         # these will be changed to have the slug first
         # only the user sees these
-
     end
 
     get '/products/new' do
         redirect_if_not_logged_in
-        @products = Product.all
-        @liquor_categories = Product.where(subcategory: 'Liquor').select(:category).distinct
-        @liquor_names = Product.where(category: params[:category]).select(:name) # default to vodka, for testing
-        @mixer_names = Product.where(subcategory: 'Mixer').select(:name)
         erb :'products/new'
-        # ids via here, then call their names as values
-    end    
+    end   
+    
+    
+    get '/categories' do
+        redirect_if_not_logged_in
+        @products = Product.select(:category).where(subcategory: params[:subcategory]).distinct
+        # binding.pry
+        erb :'products/categories', :layout => false
+    end
+
+    get '/names' do
+        redirect_if_not_logged_in
+        # binding.pry
+        @products = Product.select(:name, :id).where(category: params[:category])
+        # binding.pry
+        erb :'products/names', :layout => false
+    end
+
 
     post '/products' do
         # maybe a confirm save flash message? that way we only query once and we can track when to generate drinks
         redirect_if_not_logged_in
-        redirect_if_not_owner # check order of statements in testing
+        # redirect_if_not_owner(UserProduct) # check order of statements in testing
         user_products = current_user.user_products # we are only creating the record in user_products, not products
-        @product = Product.find_by(name: params[:product][:name])
+        new_product = Product.find(params[:id])# .id # change this to :name, not :product
         # would search be faster if id and not name?
-        if !!user_products.find_by(product_id: Product.find_by(name: params[:product][:name]))
-            flash[:notice] = "Error: #{params[:product][:name]} already exists in your inventory."
+        # binding.pry
+        if user_products.where(product_id: new_product.id).exists? #id: @product
+            flash[:notice] = "Error: #{new_product.name} already exists in your inventory."
             redirect '/products/new'
+            halt 200
         else
-            if !!@product
-                user_products.create(product_id: (Product.find_by(name: params[:product][:name])).id)
-                current_user.save
-                redirect '/products/success'
-            end
+            user_products.create(product_id: new_product.id)
+            current_user.save
+            redirect '/products/success'
         end
     end
 
     get '/products/success' do
         redirect_if_not_logged_in
-        redirect_if_not_owner()
-        @last_product = current_user.products.last.name
+        # redirect_if_not_owner(UserProduct)
+        @last_product = Product.find(current_user.user_products.last.product_id).name
         erb :'products/success'
+    end
+    
+    get '/products/edit' do 
+        redirect_if_not_logged_in
+        @user_products = current_user.products.pluck(:id, :name, :category, :subcategory)
+        # will only need id, name, category, subcategory columns
+        erb :'products/edit'
     end
 
     get '/products/:slug' do
@@ -56,16 +75,8 @@ class ProductsController < ApplicationController
         # need all columns
         # will make directory as a quick add thing!
     end        
-
-
-    get '/products/:id/edit' do # untested
-        redirect_if_not_logged_in
-        @user_products = current_user.products
-        # will only need id, name, category, subcategory columns
-        erb :'products/edit'
-    end
-
-    patch '/products/:id' do # untested
+    
+    patch '/products/' do # untested
         if params[:product] == ""
             redirect to "/products/#{params[:id]}/edit"
         else
@@ -78,7 +89,7 @@ class ProductsController < ApplicationController
         end
     end
 
-    delete '/products/:id/delete' do # untested
+    delete '/products/:slug/delete' do # untested
         @product = Product.find_by_user(params[:id])
         redirect_if_not_owner
         if @product && @product.user == current_user

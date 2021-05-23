@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html>
+
+
+<h2>Lets Stock Up!</h2>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f1f1f1;
+}
+
+#new_user_product {
+  background-color: #ffffff;
+  margin: 100px auto;
+  font-family: Raleway;
+  padding: 40px;
+  width: 70%;
+  min-width: 300px;
+}
+
+h1 {
+  text-align: center;  
+}
+
+input {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+}
+
+button {
+  background-color: #04AA6D;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: Raleway;
+  cursor: pointer;
+  width: 100px;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+#prevBtn {
+  background-color: #bbbbbb;
+}
+
+.row{
+  margin:25px;
+}
+
+.well{
+  text-align: center;
+  font-size:150%;
+}
+</style>
+
+
+<table>
+    <thead>
+        <tr>
+        <th>Name</th>
+        <th>Liquor or Mixer?<th>
+        <th>Product Type</th>
+        <th colspan="3"></th>
+        </tr>
+    </thead>
+    <tbody>
+    <% @user_products.each do |product| %>
+        <td><%= product.name %></td>
+        <td><%= product.subcategory %></td>
+        <td><%= product.category %></td>
+        <td><a href="/products/<%= product.slug %>"><%= product.name %> Information Page</a>
+        <td><a href="/products/delete
+
+
+
+
+<% @user_products.each do |product| %>
+    <li><a href="/products/<%= product.slug %>"><%= product.name %></li>
+<% end %> 
+
+<h3>To add a new item to your bar, select it from the form below</h3>
+
+<form>
+<div id="form1" hx-swap="outerHTML">
+    <label>Type</label>
+    <select name="subcategory" hx-get="/categories">
+        <option>--Please Pick One--</option>  
+        <option value="Liquor">Liquor</option>
+        <option value="Mixer">Mixer</option>
+    </select>
+  </div>
+  
+</form>
+
+</body>
+</html>
+

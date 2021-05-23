@@ -1,0 +1,63 @@
+<body onload="show_form(1)">
+
+<form id="new_user_product" name="product" action="/products" method="POST">
+  <h1>What are you adding?:</h1>
+ 
+  <div id="form_1">
+        <input type="button" id="liquor_button" value="Liquor" onclick="show_form(2)">
+        <input type="button" id="mixer_button" value="Mixer" onclick="show_form(4)">
+  </div>
+  
+  <div id="form_2">
+        <% @liquor_categories.each do |liquor| %>
+                <input type="button" id="product_category value="<%= liquor.category %>" onclick="show_form(3)" name="product[category][]">
+        <% end %> 
+  </div>
+  <div id="form_3">
+        <% @liquor_names.each do |liquor| %>
+                <input type="submit" id="product_name" value="<%= liquor.name %>" name="product[name]"><br><br>
+        <% end %>            
+               
+  </div>
+  <div id="form_4">
+        <% @mixer_names.each do |mixer| %>
+                <input type="submit" id="<%= mixer.name %>" value="<%= mixer.name %>" name="product[name]"><br>
+        <% end %>
+  </div>
+
+</form>
+
+<script>
+function show_form(n){
+    var i = 1, p = document.getElementById("form_"+1);
+    while (p !== null){
+        if (i === n){
+            p.style.display = "";
+        }
+        else{
+            p.style.display = "none";
+        }
+        i++;
+        p = document.getElementById("form_"+i);
+    }
+}
+</script>
+
+
+<div>
+    <label>Categories</label>
+    <select id="categories" name="category" hx-get="/names" hx-target="#names" hx-indicator=".htmx-indicator" hx-swap="outerHTML">
+    <% @products.each do |product| %> 
+    <option value="<%= product.category %>"><%= product.category %></option>
+    <% end %>
+    </select>
+</div>
+<div>
+        <label>Names</label>
+                <select id="names" name="name" hx-post=/products">
+                <% @products.each do |product| %>
+                        <option value="<%= product.name %>"><%= product.name %></option>
+                <% end %>
+                </select>
+</div>
+<select name="subcategory" hx-get="/categories" hx-target="#categories" hx-indicator=".htmx-indicator" hx-swap="outerHTML">
