@@ -68,18 +68,50 @@ button:hover {
 
 
 </style>
+<body onload="show_form(1)">
 
-<form>
-<div id="form1" hx-swap="outerHTML">
-    <label>Type</label>
-    <select name="subcategory" hx-get="/categories">
-        <option>--Please Pick One--</option>  
-        <option value="Liquor">Liquor</option>
-        <option value="Mixer">Mixer</option>
-    </select>
+<form id="new_user_product" name="product" action="/products" method="POST">
+  <h1>What are you adding?:</h1>
+ 
+  <div id="form_1">
+        <input type="button" id="liquor_button" value="Liquor" onclick="show_form(2)">
+        <input type="button" id="mixer_button" value="Mixer" onclick="show_form(4)">
   </div>
   
+  <div id="form_2">
+        <% @liquor_categories.each do |liquor| %>
+                <input type="button" id="product_category value="<%= liquor.category %>" onclick="show_form(3)" name="product[category][]">
+        <% end %> 
+  </div>
+  <div id="form_3">
+        <% @liquor_names.each do |liquor| %>
+                <input type="submit" id="product_name" value="<%= liquor.name %>" name="product[name]"><br><br>
+        <% end %>            
+               
+  </div>
+  <div id="form_4">
+        <% @mixer_names.each do |mixer| %>
+                <input type="submit" id="<%= mixer.name %>" value="<%= mixer.name %>" name="product[name]"><br>
+        <% end %>
+  </div>
+
 </form>
+
+<script>
+function show_form(n){
+    var i = 1, p = document.getElementById("form_"+1);
+    while (p !== null){
+        if (i === n){
+            p.style.display = "";
+        }
+        else{
+            p.style.display = "none";
+        }
+        i++;
+        p = document.getElementById("form_"+i);
+    }
+}
+</script>
 
 </body>
 </html>

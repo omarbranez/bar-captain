@@ -185,8 +185,6 @@ GEM
       tilt (~> 2.0)
     sinatra-flash (0.3.0)
       sinatra (>= 1.0.0)
-    sinatra-partial (1.0.1)
-      sinatra (>= 1.4)
     sinatra-respond_to (0.4.0)
       sinatra (>= 0.9.4)
     sprockets (4.0.2)
@@ -244,7 +242,6 @@ DEPENDENCIES
   sinatra-activerecord
   sinatra-contrib
   sinatra-flash
-  sinatra-partial
   sinatra-respond_to
   sqlite3
   thin
