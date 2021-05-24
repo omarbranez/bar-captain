@@ -1,10 +1,10 @@
 Welcome, <%= current_user.username %> <br>
 Here is your current inventory. Click on the name to get more information!
 <% @user_products.each do |product| %>
-    <li><a href="/products/<%= product.slug %>"><%= product.name %></li>
+    <li><a href="/products/<%= product.slug %>"><%= product.name %></a></li>
 <% end %>
 
-To see what you can make with these items, go <a href="/drinks">here!</a><br>
+To see what you can make with these items, click <a href="/drinks/generate">here!</a><br>
 <a href="/products/new">Add Something To My Bar Inventory</a><br>
 <a href="/products/edit">Edit My Bar Inventory</a><br>
 <a href="/drinks">See My Drink Options</a><br>

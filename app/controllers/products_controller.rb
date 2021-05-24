@@ -6,10 +6,8 @@ class ProductsController < ApplicationController
         @random_product = Product.offset(rand(489)).first # this is 3x as fast as Product.all.order(Arel.sql('random()'))
         #but might have to be Product.offset(rand(Product.select(:id).count) if we add new products (or drinks, later)
         # or find_one()
-        # binding.pry
         erb :'/products/index'
-        # these will be changed to have the slug first
-        # only the user sees these
+        # only the user sees these. create a page where sample appears and give link to register.
     end
 
     get '/products/new' do
@@ -21,23 +19,19 @@ class ProductsController < ApplicationController
     get '/categories' do
         redirect_if_not_logged_in
         @products = Product.select(:category).where(subcategory: params[:subcategory]).distinct
-        # binding.pry
         erb :'products/categories', :layout => false
     end
 
     get '/names' do
         redirect_if_not_logged_in
-        # binding.pry
         @products = Product.select(:name, :id).where(category: params[:category])
-        # binding.pry
         erb :'products/names', :layout => false
     end
 
 
     post '/products' do
-        # maybe a confirm save flash message? that way we only query once and we can track when to generate drinks
         redirect_if_not_logged_in
-        user_products = current_user.user_products # we are only creating the record in user_products, not products
+        user_products = current_user.user_products
         new_product = Product.find(params[:id])
         if user_products.where(product_id: new_product.id).exists?
             flash[:notice] = "Error: #{new_product.name} already exists in your inventory."
@@ -58,13 +52,12 @@ class ProductsController < ApplicationController
     
     get '/products/edit' do 
         redirect_if_not_logged_in
-        @user_products = current_user.products.pluck(:id, :name, :category, :subcategory)
-        # will only need id, name, category, subcategory columns
+        @user_products = current_user.products.select(:id, :name, :category, :subcategory)
         erb :'products/edit'
     end
 
     get '/products/:slug' do
-        redirect_if_not_logged_in
+        # redirect_if_not_logged_in # i think this should be public
         @product = Product.find_by_slug(params[:slug])
         erb :'products/show'
         # returns specific product
@@ -85,13 +78,21 @@ class ProductsController < ApplicationController
         end
     end
 
-    delete '/products/:slug/delete' do # untested
-        @product = Product.find_by_user(params[:id])
-        redirect_if_not_owner
-        if @product && @product.user == current_user
-            @product.delete
-            redirect '/products'
+    delete '/products/:id' do
+        product = current_user.user_products.find_by(product_id: params[:id])
+        redirect_if_not_owner(product)
+        if product && product.user == current_user
+            product.delete
+            # flash[:message] = "You have successfully deleted #{Product.find(product.product_id).name}"
         end
     end
 
+    helpers do
+        def redirect_if_not_owner(product)
+            if product.user != current_user
+                flash[:message] = "Please don't steal someone else's stuff!"
+                redirect '/products'
+            end
+        end
+    end 
 end

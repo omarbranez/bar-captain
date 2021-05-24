@@ -3,7 +3,6 @@ class DrinksController < ApplicationController
     get '/drinks' do
         # fit userslug in first, for readability
         redirect_if_not_logged_in
-        # if user_changes? true
         # @my_drinks = Bartender.new(current_user.id) 
         # @my_drinks.create_drinks # perhaps goes in bartender class? or in products controller in "new" route.
         # also want to see if any changes were made before we query again
@@ -11,7 +10,12 @@ class DrinksController < ApplicationController
         @random_drink = Drink.offset(rand(557)).first
         # just to add to the page, since it's mostly unused space pre-css'ing
         erb :'drinks/index'
-        # binding.pry
+    end
+    
+    get '/drinks/generate' do
+        redirect_if_not_logged_in
+        Bartender.new(current_user.id).create_drinks
+        redirect '/drinks'
     end
 
     get '/drinks/:slug' do

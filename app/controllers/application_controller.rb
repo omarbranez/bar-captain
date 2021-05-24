@@ -45,12 +45,6 @@ class ApplicationController < Sinatra::Base
             end
         end
 
-        def redirect_if_not_owner(current_class)
-            if current_class.user != current_user
-                redirect '/products'
-            end
-        end
-
     end
 
 end
