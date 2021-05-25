@@ -33,3 +33,7 @@ class Bartender
 
     
 end
+# begin with
+# >> drink_array = Drink.all.pluck(:ingredient1, :ingredient2, :ingredient3, :ingredient4, :ingredient5, :ingredient6, :ingredient7, :ingredient8)
+# drink_array = drink_array.map {|drink| drink.compact}
+# drink_array.each do |drink|; drink.map {|ing|;Product.find_by(name: ing).id};end
