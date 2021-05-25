@@ -9,8 +9,8 @@ img {
 <img src="<%= @drink_products.first.drink.photo_url %>" alt= <% @drink_products.first.drink.name%>>
 
 <h3><%= @drink_products.first.drink.name %></h3>
-<%= @drink_products.first.drink.drink_type %><br>
-Served in a: <%= @drink_products.first.drink.glass_type %>
+<%= @drink_products.first.drink.type %><br>
+Served in a: <%= @drink_products.first.drink.glass %>
 <h4>Recipe:</h4>
 <% @drink_products.each do |dp| %>
     <li><%= dp.product.name %></li>

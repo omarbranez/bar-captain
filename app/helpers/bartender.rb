@@ -20,7 +20,7 @@ class Bartender
     end
     
     def possible_drinks
-        Drink.all.select { |drank| (drank.products.ids - user_products).empty?}
+        Drink.all.select { |drink| (drink.products.ids - user_products).empty?}
         # select is faster than map
         # so far, only exact matches. need similar. maybe drank.product_ids.size -1?
     end
@@ -33,7 +33,3 @@ class Bartender
 
     
 end
-# begin with
-# >> drink_array = Drink.all.pluck(:ingredient1, :ingredient2, :ingredient3, :ingredient4, :ingredient5, :ingredient6, :ingredient7, :ingredient8)
-# drink_array = drink_array.map {|drink| drink.compact}
-# drink_array.each do |drink|; drink.map {|ing|;Product.find_by(name: ing).id};end

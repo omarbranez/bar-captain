@@ -1,9 +1,0 @@
-<div id="form2" hx-swap="outerHTML">
-    <label>Categories</label>
-        <select name="category" hx-get="/names">
-        <option>--Please Pick One--</option>
-        <% @products.each do |product| %> 
-            <option value="<%= product.category %>"><%= product.category %></option>
-        <% end %>
-        </select>
-</div>

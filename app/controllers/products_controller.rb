@@ -16,15 +16,15 @@ class ProductsController < ApplicationController
     end   
     
     
-    get '/categories' do
+    get '/subcategories' do
         redirect_if_not_logged_in
-        @products = Product.select(:category).where(subcategory: params[:subcategory]).distinct
+        @products = Product.select(:subcategory).where(category: params[:category]).distinct
         erb :'products/categories', :layout => false
     end
 
     get '/names' do
         redirect_if_not_logged_in
-        @products = Product.select(:name, :id).where(category: params[:category])
+        @products = Product.select(:name, :id).where(subcategory: params[:subcategory])
         erb :'products/names', :layout => false
     end
 
