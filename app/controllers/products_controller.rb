@@ -19,7 +19,7 @@ class ProductsController < ApplicationController
     get '/subcategories' do
         redirect_if_not_logged_in
         @products = Product.select(:subcategory).where(category: params[:category]).distinct
-        erb :'products/categories', :layout => false
+        erb :'products/subcategories', :layout => false
     end
 
     get '/names' do
@@ -35,7 +35,7 @@ class ProductsController < ApplicationController
         new_product = Product.find(params[:id])
         if user_products.where(product_id: new_product.id).exists?
             flash[:notice] = "Error: #{new_product.name} already exists in your inventory."
-            redirect '/products/new'
+            erb :'products/new'
             halt 200
         else
             user_products.create(product_id: new_product.id)
@@ -47,7 +47,7 @@ class ProductsController < ApplicationController
     get '/products/success' do
         redirect_if_not_logged_in
         @last_product = Product.find(current_user.user_products.last.product_id).name
-        erb :'products/success'
+        erb :'products/success', :layout => false
     end
     
     get '/products/edit' do 

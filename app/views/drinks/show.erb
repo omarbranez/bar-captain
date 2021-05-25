@@ -6,16 +6,18 @@ img {
 }
 </style>
 <body>
-<img src="<%= @drink_products.first.drink.photo_url %>" alt= <% @drink_products.first.drink.name%>>
+<img src="<%= @drink.photo_url %>" alt= <% @drink.name%>>
 
-<h3><%= @drink_products.first.drink.name %></h3>
-<%= @drink_products.first.drink.type %><br>
-Served in a: <%= @drink_products.first.drink.glass %>
+<h3><%= @drink.name %></h3>
+<%= @drink.drink_type %><br>
+Served in a: <%= @drink.glass %>
 <h4>Recipe:</h4>
 <% @drink_products.each do |dp| %>
-    <li><%= dp.product.name %></li>
+    <% unless dp.product_id == 0 %>
+    <li><%= dp.quantity %> <%= dp.product.name %></li>
+    <% end %>
     <% end %>
 <h4>Instructions:</h4>
-<%= @drink_products.first.drink.instructions %>
+<%= @drink.instructions %>
 
 </body>
