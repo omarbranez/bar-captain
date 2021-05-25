@@ -11,16 +11,17 @@ class ApplicationController < Sinatra::Base
         set :views, 'app/views'
         enable :sessions
         set :session_secret, ENV["SESSION_SECRET"]
+        set :show_exceptions, :after_handler
         register Sinatra::Flash
-        register Sinatra::RespondWith
-        # register Sinatra::Partial
-        # set :partial_template_engine, :erb
-        # enable :partial_underscores
     end
 
     get '/' do
         flash[:notice] = "Sign In to Get Your Drink On, or Sign Up to Look Bougie AF!"
         erb :index
+    end
+
+    error do
+        erb :failure
     end
 
     helpers do 
