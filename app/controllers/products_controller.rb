@@ -6,7 +6,7 @@ class ProductsController < ApplicationController
         @random_product = Product.offset(rand(489)).first # this is 3x as fast as Product.all.order(Arel.sql('random()'))
         #but might have to be Product.offset(rand(Product.select(:id).count) if we add new products (or drinks, later)
         # or find_one()
-        erb :'/products/index'
+        erb :'products/index'
         # only the user sees these. create a page where sample appears and give link to register.
     end
 
@@ -39,7 +39,7 @@ class ProductsController < ApplicationController
         else
             user_products.create(product_id: new_product.id)
             current_user.save
-            erb :'products/success'
+            redirect to "/products/#{new_product.slug}"
         end
     end
 
@@ -56,28 +56,30 @@ class ProductsController < ApplicationController
     end
 
     get '/products/:slug' do
-        # redirect_if_not_logged_in # i think this should be public
         @product = Product.find_by_slug(params[:slug])
         @drinks = DrinkProduct.select(:drink_id).where(product_id: @product.id)
-        # binding.pry
-        erb :'products/show'
-        # returns specific product
-        # need all columns
-        # will make directory as a quick add thing!
-    end        
-    
-    patch '/products/' do # untested
-        if params[:product] == ""
-            redirect to "/products/#{params[:id]}/edit"
-        else
-            @products = Product.find_by_user(user: params[:id])
-            redirect_if_not_owner(@products)
-            if @products && @products.user == current_user
-                @products.update(category: params[:product][:category])
-                redirect to "/products/#{@products.id}"
+        if logged_in?
+            if current_user.user_products.where(product_id: @product.id).exists?
+                @owned = "True"
+            else
+                @owned = "False"
             end
         end
-    end
+        erb :'products/show'
+    end        
+    
+    # patch '/products/' do # untested
+    #     if params[:product] == ""
+    #         redirect to "/products/#{params[:id]}/edit"
+    #     else
+    #         @products = Product.find_by_user(user: params[:id])
+    #         redirect_if_not_owner(@products)
+    #         if @products && @products.user == current_user
+    #             @products.update(category: params[:product][:category])
+    #             redirect to "/products/#{@products.id}"
+    #         end
+    #     end
+    # end
 
     delete '/products/:id' do
         product = current_user.user_products.find_by(product_id: params[:id])
