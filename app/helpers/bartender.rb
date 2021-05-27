@@ -31,5 +31,8 @@ class Bartender
         end
     end
 
-    
+    def makeable
+    end
+
+
 end

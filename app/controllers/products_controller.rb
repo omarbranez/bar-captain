@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
     
     get '/products' do
         redirect_if_not_logged_in
-        @user_products = current_user.products
+        @user_products = current_user.products.select(:name).order(:name)
         @random_product = Product.offset(rand(489)).first # this is 3x as fast as Product.all.order(Arel.sql('random()'))
         #but might have to be Product.offset(rand(Product.select(:id).count) if we add new products (or drinks, later)
         # or find_one()
@@ -14,20 +14,19 @@ class ProductsController < ApplicationController
         redirect_if_not_logged_in
         erb :'products/new'
     end   
-    
-    
+
     get '/subcategories' do
         redirect_if_not_logged_in
-        @products = Product.select(:subcategory).where(category: params[:category]).distinct
+        @products = Product.select(:subcategory).where(category: params[:category]).distinct.order(:subcategory)
         erb :'products/subcategories', :layout => false
     end
 
+
     get '/names' do
         redirect_if_not_logged_in
-        @products = Product.select(:name, :id).where(subcategory: params[:subcategory])
+        @products = Product.select(:name, :id).where(subcategory: params[:subcategory]).order(:name)
         erb :'products/names', :layout => false
     end
-
 
     post '/products' do
         redirect_if_not_logged_in
@@ -36,11 +35,11 @@ class ProductsController < ApplicationController
         if user_products.where(product_id: new_product.id).exists?
             flash[:notice] = "Error: #{new_product.name} already exists in your inventory."
             erb :'products/new'
-            halt 200
+            # halt 200
         else
             user_products.create(product_id: new_product.id)
             current_user.save
-            redirect '/products/success'
+            erb :'products/success'
         end
     end
 
@@ -59,6 +58,8 @@ class ProductsController < ApplicationController
     get '/products/:slug' do
         # redirect_if_not_logged_in # i think this should be public
         @product = Product.find_by_slug(params[:slug])
+        @drinks = DrinkProduct.select(:drink_id).where(product_id: @product.id)
+        # binding.pry
         erb :'products/show'
         # returns specific product
         # need all columns

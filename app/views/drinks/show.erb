@@ -1,23 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
 <style>
 img {
-    width: 30%;
+    width: 100%;
     height: auto;
     position: relative;
 }
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+}
+
+.title {
+  color: grey;
+  font-size: 18px;
+}
+
+button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+a {
+  text-decoration: none;
+  font-size: 1em;
+  color: black;
+}
+
+button:hover, a:hover {
+  opacity: 0.7;
+}
 </style>
+</head>
 <body>
-<img src="<%= @drink.photo_url %>" alt= <% @drink.name%>>
+<div class="card">
+<img src="<%= @drink.photo_url %>" alt="<% @drink.name %>">
+  <div class="container">
+  <h3><b><%= @drink.name %></b></h3>
+    <p><%= @drink.drink_type %></p>
+    <p>Served in a <%= @drink.glass %></p>
+    <h4>Recipe:</h4>
+    <% @drink_products.each do |dp| %>
+        <% unless dp.product_id == 0 %>
+        <li><%= dp.quantity %> <a href="/products/<%= dp.product.slug %>"><%= dp.product.name %></a></li>
+        <% end %>
+        <% end %>
+    <h4>Instructions:</h4>
+    <%= @drink.instructions %>
 
-<h3><%= @drink.name %></h3>
-<%= @drink.drink_type %><br>
-Served in a: <%= @drink.glass %>
-<h4>Recipe:</h4>
-<% @drink_products.each do |dp| %>
-    <% unless dp.product_id == 0 %>
-    <li><%= dp.quantity %> <%= dp.product.name %></li>
-    <% end %>
-    <% end %>
-<h4>Instructions:</h4>
-<%= @drink.instructions %>
-
+  </div>
+</div>
 </body>
+</html>
