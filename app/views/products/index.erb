@@ -1,3 +1,10 @@
+<style>
+body {
+    background-color: #f1f1f1;
+    margin-top: 70px
+  }
+</style>
+
 Welcome, <%= current_user.username %> <br>
 Here is your current inventory. Click on the name to get more information!
 <% @user_products.each do |product| %>

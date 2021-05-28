@@ -22,5 +22,10 @@ class DrinksController < ApplicationController
         erb :'/drinks/show'        
     end
 
+    get '/drinks/new' do
+        redirect_if_not_logged_in
+    end
+
+
 
 end

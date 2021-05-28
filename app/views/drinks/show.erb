@@ -14,6 +14,10 @@ img {
   text-align: center;
 }
 
+body {
+  background-color: #f1f1f1;
+  margin-top: 70px
+}
 
 button {
   border: none;
@@ -37,25 +41,40 @@ a {
 button:hover, a:hover {
   opacity: 0.7;
 }
+
+.row {
+  display: flex;
+  padding: 16px;
+  z-index: 5;
+}
+
+.column {
+  flex: 50%;
+}
+
+div.sticky {
+  position: -webkit-sticky; 
+  position: sticky;
+  top: 50%;
+}
 </style>
 </head>
-<body>
-<div class="card">
-<img src="<%= @drink.photo_url %>" alt="<% @drink.name %>">
-  <div class="container">
-  <h2><b><%= @drink.name %></b></h2>
-    <p><%= @drink.drink_type %></p>
-    <p>Served in a <%= @drink.glass %></p>
-    <h4>Recipe:</h4>
-    <% @drink_products.each do |dp| %>
-        <% unless dp.product_id == 0 %>
-        <li><%= dp.quantity %> <a href="/products/<%= dp.product.slug %>"><%= dp.product.name %></a></li>
-        <% end %>
-        <% end %>
-    <h4>Instructions:</h4>
-    <%= @drink.instructions %>
-
-  </div>
-</div>
-</body>
+    <body>
+        <div class="card">
+            <img src="<%= @drink.photo_url %>" alt="<% @drink.name %>">
+            <div class="container">
+                <h2><b><%= @drink.name %></b></h2>
+                <p><%= @drink.drink_type %></p>
+                <p>Served in a <%= @drink.glass %></p>
+                <h4>Recipe:</h4>
+                <% @drink_products.each do |dp| %>
+                    <% unless dp.product_id == 0 %>
+                        <li><%= dp.quantity %> <a href="/products/<%= dp.product.slug %>"><%= dp.product.name %></a></li>
+                    <% end %>
+                <% end %>
+                <h4>Instructions:</h4>
+                <%= @drink.instructions %>
+            </div>
+        </div>
+    </body>
 </html>

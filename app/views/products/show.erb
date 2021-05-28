@@ -19,7 +19,6 @@ a {
 .row {
   display: flex;
   padding: 16px;
-  margin-top: 100px;
   z-index: 5;
 }
 
@@ -57,23 +56,23 @@ div.sticky {
         </div>
     </div>
     <div class="column">
-    <div class="sticky">
-        <div class="card">
-            <div class="container">
-                <% if @owned == "True" %>
-                    <h4>This product is currently in your collection.</h4>
-                    <h4>Would you like to remove it?</h4>
-                    <button type="submit" class="btn btn-danger" hx-delete="/products/<%= @product.id %>" hx-redirect="/products/<%= @product.slug %>"> Delete <%= @product.name %></button>
-                <% else %>
-                    <h3>Would you like to add this to your inventory?</h3>
-                    <form action="/products" method="POST">
-                    <button type="submit" class="btn btn-primary" value="<%= @product.id %>" name="id" hx-redirect="/products/<%= @product.slug %>">Add <%= @product.name %></button>
-                    </form>
-                    <div id="response"</div>
-                <% end %>
+        <div class="sticky">
+            <div class="card">
+                <div class="container">
+                    <% if @owned == "True" %>
+                        <h4>This product is currently in your collection.</h4>
+                        <h4>Would you like to remove it?</h4>
+                        <button type="submit" class="btn btn-danger" hx-delete="/products/<%= @product.id %>" hx-redirect="/products/<%= @product.slug %>"> Delete <%= @product.name %></button>
+                    <% else %>
+                        <h3>Would you like to add this to your inventory?</h3>
+                        <form action="/products" method="POST">
+                        <button type="submit" class="btn btn-primary" value="<%= @product.id %>" name="id" hx-redirect="/products/<%= @product.slug %>">Add <%= @product.name %></button>
+                        </form>
+                        <div id="response"</div>
+                    <% end %>
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </div>
 

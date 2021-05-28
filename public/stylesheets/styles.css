@@ -67,6 +67,8 @@ body {
   color: #212529;
   text-align: left;
   background-color: #fff;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -3967,7 +3969,6 @@ input[type=button].btn-block {
   top: 0;
   width: 100%;
   overflow: hidden;
-  z-index: 9999;
 }
 
 
@@ -3981,6 +3982,7 @@ input[type=button].btn-block {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 70px;
 }
 .navbar-brand {
   display: inline-block;
@@ -9970,6 +9972,7 @@ h3 {
   }
   body {
     min-width: 992px !important;
+    padding-top: 70px;
   }
 
   .container {

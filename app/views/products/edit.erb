@@ -14,6 +14,7 @@
 
 body {
   background-color: #f1f1f1;
+  margin-top: 70px
 }
 
 #new_user_product {
@@ -75,26 +76,25 @@ tr.htmx-swapping td {
 <table>
     <thead>
         <tr>
-        <th style="width:130px">Name</th>
-        <th style="width:130px">Type</th>
-        <th style="width:130px">Category</th>
-        <th style="width:130px">More Information</th>
-        <th style="width:130px">Replace Product</th>
-        <th style="width:130px">Delete Product</th>
+          <th style="width:130px">Name</th>
+          <th style="width:130px">Type</th>
+          <th style="width:130px">Category</th>
+          <th style="width:130px">More Information</th>
+          <th style="width:130px">Delete Product</th>
         </tr>
     </thead>
     <tbody hx-confirm="Are you sure you want to remove this product from your collection?" hx-target="closest tr" hx-swap="outerHTML swap:1s">
-    <tr>
-    <% @user_products.each do |product| %>
-        <td><%= product.name %></td>
-        <td><%= product.category %></td>
-        <td><%= product.subcategory %></td>
-        <td><a href="/products/<%= product.slug %>"><%= product.name %> Information Page</a></td>
-        <td><button class="btn btn-danger" hx-delete="/products/<%= product.id %>">Delete <%= product.name %></button>
-        </tr>
+      <tr>
+        <% @user_products.each do |product| %>
+          <td><%= product.name %></td>
+          <td><%= product.category %></td>
+          <td><%= product.subcategory %></td>
+          <td><a href="/products/<%= product.slug %>"><%= product.name %> Information Page</a></td>
+          <td><button class="btn btn-danger" hx-delete="/products/<%= product.id %>">Delete <%= product.name %></button>
+      </tr>
         <% end %>
-        </tbody>
-        </table>
+    </tbody>
+</table>
 
 
 </body>
