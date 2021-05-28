@@ -471,7 +471,7 @@ mark,
   color: #6c757d;
 }
 .blockquote-footer::before {
-  content: "— ";
+  content: "— ";
 }
 
 .img-fluid {
@@ -3982,7 +3982,6 @@ input[type=button].btn-block {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 70px;
 }
 .navbar-brand {
   display: inline-block;
