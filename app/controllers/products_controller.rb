@@ -82,10 +82,17 @@ class ProductsController < ApplicationController
 
     delete '/products/:id' do
         product = current_user.user_products.find_by(product_id: params[:id])
+        deleted_product = Product.find(params[:id])
         redirect_if_not_owner(product)
+        # binding.pry
         if product && product.user == current_user
             product.delete
             # flash[:message] = "You have successfully deleted #{Product.find(product.product_id).name}"
+        end
+        if params[:origin] == "show"
+            redirect to "/products/#{deleted_product.slug}"
+        else
+            redirect to "/products/edit"
         end
     end
 
