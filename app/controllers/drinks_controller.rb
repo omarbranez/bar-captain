@@ -14,18 +14,57 @@ class DrinksController < ApplicationController
         redirect '/drinks'
     end
 
+    get '/drinks/new' do
+        redirect_if_not_logged_in
+        erb :'drinks/new'
+    end
+
+    get '/search' do
+        erb :'drinks/search'
+    end
+
+    post '/search' do
+        # binding.pry
+        if !params[:search].empty?
+            @products = Product.where("name LIKE ?", "%#{params[:search]}%")#.pluck(:name,:category,:subcategory)
+            # binding.pry
+        end
+        erb :'result', :layout => false
+        # redirect '/search', :layout => false
+    end
+    
+    post '/drinks' do
+        redirect_if_not_logged_in
+        redirect "/drinks/#{@drink.slug}"
+    end
+    
     get '/drinks/:slug' do
         @drink = Drink.find_by_slug(params[:slug])
         @drink_products = DrinkProduct.select("product_id, quantity").where(drink_id: @drink.id)
         if !!logged_in?
-        # guests dont have any drinks
+            # guests dont have any drinks
             makeable_drink_validation
         end
-        erb :'/drinks/show'        
+        erb :'drinks/show'        
+    end
+    
+    get '/drinks/:slug/edit' do
+        redirect_if_not_logged_in
+        @drink = Drink.find_by_slug(params[:slug])
+        redirect_if_not_author
+        erb :'drinks/edit'
     end
 
-    get '/drinks/new' do
-        redirect_if_not_logged_in
+    patch '/drinks/:slug' do
+        validate_author_logged_in
+        drink.update(params)
+        redirect "/drinks/#{drink.slug}"
+    end
+
+    delete '/drinks/:slug/delete' do
+        validate_author_logged_in
+        drink.delete
+        redirect '/drinks'
     end
 
     helpers do
@@ -72,6 +111,12 @@ class DrinksController < ApplicationController
             possible_drinks.each do |d|
                 current_user.user_drinks.find_or_create_by(drink_id: d.id)
             end
+        end
+
+        def validate_author_logged_in
+            redirect_if_not_logged_in
+            drink = Drink.find_by_slug(params[:slug])
+            redirect_if_not_author
         end
 
     end

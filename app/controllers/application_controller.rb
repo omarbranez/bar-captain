@@ -45,6 +45,16 @@ class ApplicationController < Sinatra::Base
             end
         end
 
+        def redirect_if_not_author
+            if @drink.author != current_user
+                redirect '/drinks'
+            end
+        end
+
+        def partial (template, locals = {})
+            erb(template, :layout => false, :locals => locals)
+        end
+
     end
 
 end

@@ -4,3 +4,8 @@ body {
   margin-top: 70px
 }
 </style>
+
+<h3>Search for Products</h3><br>
+
+<input class="form-control" type="text" name="search" id="drink_ing_1" placeholder="Type to search..." hx-post="/search" hx-trigger="keyup changed delay:500ms" hx-target="#results"><br>
+<%= partial(:result) %>
