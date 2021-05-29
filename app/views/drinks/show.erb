@@ -18,7 +18,7 @@ body {
 a {
   text-decoration: none;
   font-size: 1em;
-  color: black;
+  color: blue;
 }
 
 .row {
@@ -78,7 +78,7 @@ li {
                         <% else %>
                             <h4>In order to make this drink, you still need:</h4>
                             <% @missing_products.each do |mp| %>
-                                <li><a href="/products/<%= mp.slug %>"><%= mp.name %></a></li>
+                                <li style="font-size: 1.5em"><a href="/products/<%= mp.slug %>"><%= mp.name %></a></li>
                             <% end %>
                             <br>
                             <p>Click on the ingredient link to be taken to that item's page</p>

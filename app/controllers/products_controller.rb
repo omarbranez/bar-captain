@@ -67,19 +67,6 @@ class ProductsController < ApplicationController
         end
         erb :'products/show'
     end        
-    
-    # patch '/products/' do # untested
-    #     if params[:product] == ""
-    #         redirect to "/products/#{params[:id]}/edit"
-    #     else
-    #         @products = Product.find_by_user(user: params[:id])
-    #         redirect_if_not_owner(@products)
-    #         if @products && @products.user == current_user
-    #             @products.update(category: params[:product][:category])
-    #             redirect to "/products/#{@products.id}"
-    #         end
-    #     end
-    # end
 
     delete '/products/:id' do
         product = current_user.user_products.find_by(product_id: params[:id])

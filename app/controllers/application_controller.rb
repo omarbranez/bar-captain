@@ -2,8 +2,6 @@ require './config/environment'
 require 'sinatra'
 require 'sinatra/base'
 require 'sinatra/flash'
-require 'sinatra/respond_with'
-# require 'sinatra/partial'
 
 class ApplicationController < Sinatra::Base
     configure do
@@ -14,6 +12,7 @@ class ApplicationController < Sinatra::Base
         set :show_exceptions, :after_handler
         register Sinatra::Flash
     end
+
 
     get '/' do
         flash[:notice] = "Sign In to Get Your Drink On, or Sign Up to Look Bougie AF!"
