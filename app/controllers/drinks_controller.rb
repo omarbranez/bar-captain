@@ -19,18 +19,15 @@ class DrinksController < ApplicationController
         erb :'drinks/new'
     end
 
-    get '/search' do
+    get '/drinks/search' do
         erb :'drinks/search'
     end
 
-    post '/search' do
-        # binding.pry
+    post '/drinks/search' do
         if !params[:search].empty?
-            @products = Product.where("name LIKE ?", "%#{params[:search]}%")#.pluck(:name,:category,:subcategory)
-            # binding.pry
+            @drinks = Drink.where("name LIKE ?", "%#{params[:search]}%")
         end
-        erb :'result', :layout => false
-        # redirect '/search', :layout => false
+        erb :'drinkresults', :layout => false
     end
     
     post '/drinks' do

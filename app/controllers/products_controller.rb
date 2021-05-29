@@ -15,6 +15,7 @@ class ProductsController < ApplicationController
         erb :'products/new'
     end   
 
+    
     get '/subcategories' do
         redirect_if_not_logged_in
         @products = Product.select(:subcategory).where(category: params[:category]).distinct.order(:subcategory)
@@ -26,6 +27,17 @@ class ProductsController < ApplicationController
         redirect_if_not_logged_in
         @products = Product.select(:name, :id).where(subcategory: params[:subcategory]).order(:name)
         erb :'products/names', :layout => false
+    end
+
+    get '/products/search' do
+        erb :'drinks/search'
+    end
+
+    post '/products/search' do
+        if !params[:search].empty?
+            @products = Product.where("name LIKE ?", "%#{params[:search]}%")
+        end
+        erb :'result', :layout => false
     end
 
     post '/products' do
