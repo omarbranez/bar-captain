@@ -38,11 +38,11 @@ class DrinksController < ApplicationController
     
     post '/drinks' do
         redirect_if_not_logged_in
-        if params[:drink][:name] == "" || if params[:drink][:type] == "" || if params[:drink][:glass] == "" || if params[:drink][:ingredient1] == "" || if params[:drink][:quantity_1] == "" || if params[:drink][:ingredient2] == "" || if params[:drink][:quantity2] == "" || if params[:drink][:photo_url] == ""
+        if params[:drink][:name] == "" || params[:drink][:type] == "" || params[:drink][:glass] == "" || params[:drink][:ingredient1] == "" ||  params[:drink][:quantity_1] == "" || params[:drink][:ingredient2] == "" || params[:drink][:quantity2] == "" || params[:drink][:photo_url] == ""
             flash[:warning] = "Please fill all fields before submitting"
             redirect '/drinks/new'
         else
-            drink = Drink.new(:name => params[:drink][:name], :drink_type => params[:drink][:type], :glass => params[:drink][:glass], :photo_url => params[:drink][:photo_url])
+            drink = Drink.new(:name => params[:drink][:name], :drink_type => params[:drink][:type], :glass => params[:drink][:glass], :photo_url => params[:drink][:photo_url], :user_id => current_user.id)
             drink.save
             product_first = Product.find_by(name: params[:drink][:ingredient1])
             product_second = Product.find_by(name: params[:drink][:ingredient2])
@@ -52,6 +52,7 @@ class DrinksController < ApplicationController
             new_drink_product_2.save
         # binding.pry
         redirect "/drinks/#{drink.slug}"
+        end
     end
 
     get '/drinks/:slug' do
@@ -130,7 +131,7 @@ class DrinksController < ApplicationController
         end
 
         def redirect_if_not_author
-            if @drink.author != current_user
+            if @drink.user_id != current_user.id
                 redirect '/drinks'
             end
         end
