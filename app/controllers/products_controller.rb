@@ -12,12 +12,14 @@ class ProductsController < ApplicationController
 
     get '/products/new' do
         redirect_if_not_logged_in
+        # we COULD just use the search to create. add a button at the end of each row to add...
         erb :'products/new'
     end   
 
     
     get '/subcategories' do
         redirect_if_not_logged_in
+        # may have to redirect if they're not in the process of adding something
         @products = Product.select(:subcategory).where(category: params[:category]).distinct.order(:subcategory)
         erb :'products/subcategories', :layout => false
     end
@@ -25,12 +27,13 @@ class ProductsController < ApplicationController
 
     get '/names' do
         redirect_if_not_logged_in
+        # may have to redirect if they're not in the process of adding something
         @products = Product.select(:name, :id).where(subcategory: params[:subcategory]).order(:name)
         erb :'products/names', :layout => false
     end
 
     get '/products/search' do
-        erb :'drinks/search'
+        erb :'products/search'
     end
 
     post '/products/search' do
@@ -47,7 +50,6 @@ class ProductsController < ApplicationController
         if user_products.where(product_id: new_product.id).exists?
             flash[:notice] = "Error: #{new_product.name} already exists in your inventory."
             erb :'products/new'
-            # halt 200
         else
             user_products.create(product_id: new_product.id)
             current_user.save
@@ -84,10 +86,8 @@ class ProductsController < ApplicationController
         product = current_user.user_products.find_by(product_id: params[:id])
         deleted_product = Product.find(params[:id])
         redirect_if_not_owner(product)
-        # binding.pry
         if product && product.user == current_user
             product.delete
-            # flash[:message] = "You have successfully deleted #{Product.find(product.product_id).name}"
         end
         if params[:origin] == "show"
             redirect to "/products/#{deleted_product.slug}"

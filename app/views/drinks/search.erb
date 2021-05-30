@@ -7,5 +7,5 @@ body {
 
 <h3>Search for Drinks</h3><br>
 
-<input class="form-control" type="text" name="search" id="drink_ing_1" placeholder="Type to search..." hx-post="/drinks/search" hx-trigger="keyup changed delay:500ms" hx-target="#results"><br>
+<input class="form-control" type="text" name="search" placeholder="Type to search..." hx-post="/drinks/search" hx-trigger="keyup changed delay:500ms" hx-target="#results"><br>
 <%= partial(:drinkresults) %>

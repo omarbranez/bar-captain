@@ -16,6 +16,12 @@ class DrinksController < ApplicationController
 
     get '/drinks/new' do
         redirect_if_not_logged_in
+        @drink_types = Drink.select(:drink_type).distinct.order(:drink_type)
+        @glass_types = Drink.select(:glass).distinct.order(:glass)
+        @products = Product.select(:id, :name, :category, :subcategory)
+        @products_first = @products.where(category: "Liquor")
+        @products_second = @products.where(category: "Mixer")
+        # binding.pry
         erb :'drinks/new'
     end
 
@@ -32,9 +38,22 @@ class DrinksController < ApplicationController
     
     post '/drinks' do
         redirect_if_not_logged_in
-        redirect "/drinks/#{@drink.slug}"
+        if params[:drink][:name] == "" || if params[:drink][:type] == "" || if params[:drink][:glass] == "" || if params[:drink][:ingredient1] == "" || if params[:drink][:quantity_1] == "" || if params[:drink][:ingredient2] == "" || if params[:drink][:quantity2] == "" || if params[:drink][:photo_url] == ""
+            flash[:warning] = "Please fill all fields before submitting"
+            redirect '/drinks/new'
+        else
+            drink = Drink.new(:name => params[:drink][:name], :drink_type => params[:drink][:type], :glass => params[:drink][:glass], :photo_url => params[:drink][:photo_url])
+            drink.save
+            product_first = Product.find_by(name: params[:drink][:ingredient1])
+            product_second = Product.find_by(name: params[:drink][:ingredient2])
+            new_drink_product_1 = DrinkProduct.new(:id => Drink.last.id, :product_id => product_first.id, :quantity => params[:drink][:quantity1])
+            new_drink_product_1.save
+            new_drink_product_2 = DrinkProduct.new(:id => Drink.last.id, :product_id => product_second.id, :quantity => params[:drink][:quantity2])
+            new_drink_product_2.save
+        # binding.pry
+        redirect "/drinks/#{drink.slug}"
     end
-    
+
     get '/drinks/:slug' do
         @drink = Drink.find_by_slug(params[:slug])
         @drink_products = DrinkProduct.select("product_id, quantity").where(drink_id: @drink.id)
@@ -110,6 +129,12 @@ class DrinksController < ApplicationController
             end
         end
 
+        def redirect_if_not_author
+            if @drink.author != current_user
+                redirect '/drinks'
+            end
+        end
+
         def validate_author_logged_in
             redirect_if_not_logged_in
             drink = Drink.find_by_slug(params[:slug])
@@ -117,7 +142,5 @@ class DrinksController < ApplicationController
         end
 
     end
-
-
 
 end
