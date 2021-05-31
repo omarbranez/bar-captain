@@ -1,56 +1,32 @@
-<style>
-input {
-    width: 50%;
-}
-form {
-    overflow: scroll;
-}
-</style>
-<body>
 <h3>Want to add your own recipe to the database? Be our guest!</h3>
 
     <form action="/drinks" method="POST">
-        <input type="text" name="drink[name]" maxlength="40" placeholder="What's the drink called?">
-        <br>
-        <br>
+        <input type="text" name="drink[name]" maxlength="40" placeholder="What's the drink called?" style="width:50%"><br><br>
         <select class="selectpicker show-tick" title="What type of drink is it?" data-width="50%" name="drink[type]">
-                <% @drink_types.each do |drink| %>
-                    <option value="<%= drink.drink_type %>"><%= drink.drink_type %></option>
-                <% end %>
-        </select>
-        <br>
-        <br>
+            <% @drink_types.each do |drink| %>
+                <option value="<%= drink.drink_type %>"><%= drink.drink_type %></option>
+            <% end %>
+        </select><br><br>
         <select class="selectpicker show-tick" title="What type of glass does it go in?" data-width="50%" name="drink[glass]">
                 <% @glass_types.each do |drink| %>
                     <option value="<%= drink.glass %>"><%= drink.glass %></option>
                 <% end %>
-        </select>
-        <br>
-        <br>
+        </select><br><br>
         <select class="selectpicker show-tick" data-live-search="true" title="What's the first ingredient?" data-width="50%" name="drink[ingredient1]">  
             <% @products_first.each do |product| %>
-            <option data-subtext="<%= product.subcategory %>"><%= product.name %></option>
+                <option data-subtext="<%= product.subcategory %>" value="<%= product.id %>"><%= product.name %></option>
             <% end %>
-        </select>
-        <br>
-        <br>
-        <input type="text" name="drink[quantity_1]" maxlength="30" placeholder="How much is needed of Ingredient 1?">
-        <br>
-        <br>
+        </select><br><br>
+        <input type="text" name="drink[quantity_1]" maxlength="30" placeholder="How much is needed of Ingredient 1?" style="width:50%"><br><br>
         <select class="selectpicker show-tick" data-live-search="true" title="What's the second ingredient?" data-width="50%" name="drink[ingredient2]">  
             <% @products_second.each do |product| %>
-            <option data-subtext="<%= product.subcategory %>"><%= product.name %></option>
+                <option data-subtext="<%= product.subcategory %>" value="<%= product.id %>"><%= product.name %></option>
             <% end %>
-        </select>
-        <br>
-        <br>
-        <input type="text" name="drink[quantity_2]" maxlength="30" placeholder="How much is needed of Ingredient 2?">
-        <br>
-        <br>
-        <input type="text" name="drink[photo_url]" placeholder="Please enter a valid URL to a photo of this drink">
+        </select><br><br>
+        <input type="text" name="drink[quantity_2]" maxlength="30" placeholder="How much is needed of Ingredient 2?" style="width:50%"><br><br>
+        <input type="text" name="drink[photo_url]" placeholder="Please enter a valid URL to a photo of this drink" style="width:50%"><br><br>
+        <input type="text" name="drink[instructions]" placeholder="How do you make it?"></><br><br>
         <button id="button-submit" type="submit" class="btn btn-primary">Add Drink to Database</button>
+    </form>
 
-
-</form>
-</body>
 

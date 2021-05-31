@@ -1,2 +1,15 @@
+<h3>Edit a Drink</h3>
 
-hi
+<%= @drink.name %><br>
+<%= @drink.drink_type %><br>
+<%= @drink.glass %><br>
+<% @drink_products.each do |dp| %>
+    <% unless dp.product_id == 0 %>
+        <%= dp.product.name %><br>
+        <%= dp.quantity %> <br>
+    <% end %>
+<% end %>
+<%= @drink.instructions %><br>
+<%= @drink.photo_url %><br>
+
+

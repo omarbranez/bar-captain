@@ -21,7 +21,7 @@ class DrinksController < ApplicationController
         @products = Product.select(:id, :name, :category, :subcategory)
         @products_first = @products.where(category: "Liquor")
         @products_second = @products.where(category: "Mixer")
-        # binding.pry
+        # will add more
         erb :'drinks/new'
     end
 
@@ -42,16 +42,13 @@ class DrinksController < ApplicationController
             flash[:warning] = "Please fill all fields before submitting"
             redirect '/drinks/new'
         else
-            drink = Drink.new(:name => params[:drink][:name], :drink_type => params[:drink][:type], :glass => params[:drink][:glass], :photo_url => params[:drink][:photo_url], :user_id => current_user.id)
+            drink = Drink.new(:name => params[:drink][:name], :drink_type => params[:drink][:type], :glass => params[:drink][:glass], :instructions => params[:drink][:instructions], :photo_url => params[:drink][:photo_url], :user_id => current_user.id)
             drink.save
-            product_first = Product.find_by(name: params[:drink][:ingredient1])
-            product_second = Product.find_by(name: params[:drink][:ingredient2])
-            new_drink_product_1 = DrinkProduct.new(:id => Drink.last.id, :product_id => product_first.id, :quantity => params[:drink][:quantity1])
+            new_drink_product_1 = DrinkProduct.new(:drink_id => Drink.last.id, :product_id => params[:drink][:ingredient1], :quantity => params[:drink][:quantity_1])
             new_drink_product_1.save
-            new_drink_product_2 = DrinkProduct.new(:id => Drink.last.id, :product_id => product_second.id, :quantity => params[:drink][:quantity2])
+            new_drink_product_2 = DrinkProduct.new(:drink_id => Drink.last.id, :product_id => params[:drink][:ingredient1], :quantity => params[:drink][:quantity_2])
             new_drink_product_2.save
-        # binding.pry
-        redirect "/drinks/#{drink.slug}"
+            redirect "/drinks/#{drink.slug}"
         end
     end
 
@@ -59,17 +56,19 @@ class DrinksController < ApplicationController
         @drink = Drink.find_by_slug(params[:slug])
         @drink_products = DrinkProduct.select("product_id, quantity").where(drink_id: @drink.id)
         if !!logged_in?
-            # guests dont have any drinks
             makeable_drink_validation
         end
         erb :'drinks/show'        
     end
     
     get '/drinks/:slug/edit' do
-        redirect_if_not_logged_in
         @drink = Drink.find_by_slug(params[:slug])
-        redirect_if_not_author
-        erb :'drinks/edit'
+        if user_is_also_author
+            @drink_products = DrinkProduct.select("product_id, quantity").where(drink_id: @drink.id)
+            erb :'drinks/edit'
+        else
+            redirect_if_not_author
+        end
     end
 
     patch '/drinks/:slug' do
@@ -78,10 +77,16 @@ class DrinksController < ApplicationController
         redirect "/drinks/#{drink.slug}"
     end
 
-    delete '/drinks/:slug/delete' do
-        validate_author_logged_in
-        drink.delete
-        redirect '/drinks'
+    delete '/drinks/:slug' do
+        @drink = Drink.find_by_slug(params[:slug])
+        drink_products = DrinkProduct.where(drink_id: @drink.id)
+        if user_is_also_author
+            @drink.delete
+            drink_products.delete
+            redirect '/drinks'
+        else 
+            redirect_if_not_author
+        end
     end
 
     helpers do
@@ -140,7 +145,7 @@ class DrinksController < ApplicationController
         end
         
         def redirect_if_not_author
-            if @drink.user_id != current_user.id
+            if !user_is_also_author
                 redirect '/drinks'
             end
         end
