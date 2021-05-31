@@ -13,32 +13,20 @@ class ProductsController < ApplicationController
     get '/products/new' do
         redirect_if_not_logged_in
         # we COULD just use the search to create. add a button at the end of each row to add...
+        # binding.pry
         erb :'products/new'
     end   
-
-    
-    get '/subcategories' do
-        redirect_if_not_logged_in
-        # may have to redirect if they're not in the process of adding something
-        @products = Product.select(:subcategory).where(category: params[:category]).distinct.order(:subcategory)
-        erb :'products/subcategories', :layout => false
-    end
-
-
-    get '/names' do
-        redirect_if_not_logged_in
-        # may have to redirect if they're not in the process of adding something
-        @products = Product.select(:name, :id).where(subcategory: params[:subcategory]).order(:name)
-        erb :'products/names', :layout => false
-    end
 
     get '/products/search' do
         erb :'products/search'
     end
 
-    post '/products/search' do
+    post '/search' do
         if !params[:search].empty?
             @products = Product.where("name LIKE ?", "%#{params[:search]}%")
+        end
+        if request.referer.last(3) == "new"
+            @new_button = "true"
         end
         erb :'result', :layout => false
     end

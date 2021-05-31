@@ -1,20 +1,20 @@
-<style>
-body {
-    background-color: #f1f1f1;
-    margin-top: 70px
-  }
-</style>
-
-Welcome, <%= current_user.username %> <br>
-Here is your current inventory. Click on the name to get more information!
+<h4>Welcome, <%= current_user.username %> </h4><br>
+<p>Here is your current inventory. Click on the name to get more information!</p>
 <% @user_products.each do |product| %>
     <li><a href="/products/<%= product.slug %>"><%= product.name %></a></li>
+    <% end %>
+<% if empty_inventory %>
+    <p>A bar without booze? Go stock up!</p>
 <% end %>
 
-To see what you can make with these items, click <a href="/drinks/generate">here!</a><br>
+<% unless empty_inventory %>
+<p>To see what you can make with these items, click <a href="/drinks/generate">here!</a></p><br>
+<% end %>
 <a href="/products/new">Add Something To My Bar Inventory</a><br>
+<% unless empty_inventory %>
 <a href="/products/edit">Edit My Bar Inventory</a><br>
 <a href="/drinks">See My Drink Options</a><br>
+<% end %>
 <a href="/drinks/search">Search for a Specific Drink</a><br>
 
 <%= @random_product.name %>

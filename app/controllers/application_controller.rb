@@ -16,11 +16,11 @@ class ApplicationController < Sinatra::Base
 
     get '/' do
         flash[:notice] = "Sign In to Get Your Drink On, or Sign Up to Look Bougie AF!"
-        erb :index
+        erb :'index'
     end
 
     error do
-        erb :failure
+        erb :'failure'
     end
 
     helpers do 
@@ -47,6 +47,10 @@ class ApplicationController < Sinatra::Base
 
         def partial (template, locals = {})
             erb(template, :layout => false, :locals => locals)
+        end
+
+        def empty_inventory
+            !!@user_products.empty?
         end
         
     end
