@@ -130,6 +130,15 @@ class DrinksController < ApplicationController
             end
         end
 
+        def drink_author
+            User.find(@drink.user_id).username
+            # miiiiight have to change those relationships
+        end
+        
+        def user_is_also_author
+            current_user.id == @drink.user_id
+        end
+        
         def redirect_if_not_author
             if @drink.user_id != current_user.id
                 redirect '/drinks'

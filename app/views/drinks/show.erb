@@ -44,6 +44,15 @@ li {
                 <div class="container">
                     <img id="drink-image" src="<%= @drink.photo_url %>" alt="<% @drink.name %>">                    
                     <h2><b><%= @drink.name %></b></h2>
+                    <p>Provided by <%= drink_author %></p>
+                    <% if user_is_also_author %>
+                    <a href="/drinks/<%= @drink.slug %>/edit" class="btn btn-warning">Edit <%= @drink.name %></a>
+                    <form action"/drinks/<%= @drink.slug %>/delete" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger">Delete <%= @drink.name %>?</button>
+                    </form>
+                    <% end %>
+                    <br>
                     <p><%= @drink.drink_type %></p>
                     <p>Served in a <%= @drink.glass %></p>
                     <h4>Recipe:</h4>
