@@ -13,5 +13,4 @@ class Product < ActiveRecord::Base
         Product.all.find {|product| product.slug == slug }
     end
 
-    # will refactor into single module
 end 

@@ -1,5 +1,8 @@
-Welcome to Your Homepage
-<br>
-<a href="/products">Manage My Inventory</a><br>
-<a href="/drinks">Get Drink Information</a><br>
-<a href="/menus">See Possible Drinks</a>
+<% if logged_in? %>
+    <h2>Welcome, <%= current_user.username %>!</h2><br>
+    <a href="/products" class="btn btn-primary btn-lg">Products Home</a><br><br>
+    <a href="/drink" class="btn btn-success btn-lg">Drinks Home</a><br><br>
+    <a href="/logout" class="btn btn-warning btn-sm" btn-lg">Sign Out</a>
+<% else %>
+    Please <a href="/signup" class="btn btn-primary btn-lg">Sign Up</a> or <a href="/login" class="btn btn-secondary btn-lg">Log In</a> to continue.
+<% end %>

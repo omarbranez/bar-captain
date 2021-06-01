@@ -3,22 +3,26 @@ class ProductsController < ApplicationController
     get '/products' do
         redirect_if_not_logged_in
         @user_products = current_user.products.select(:name).order(:name)
-        @random_product = Product.offset(rand(489)).first # this is 3x as fast as Product.all.order(Arel.sql('random()'))
+        # @random_product = Product.offset(rand(489)).first # this is 3x as fast as Product.all.order(Arel.sql('random()'))
         #but might have to be Product.offset(rand(Product.select(:id).count) if we add new products (or drinks, later)
         # or find_one()
+        # will implement at later time
         erb :'products/index'
-        # only the user sees these. create a page where sample appears and give link to register.
     end
 
     get '/products/new' do
         redirect_if_not_logged_in
-        # we COULD just use the search to create. add a button at the end of each row to add...
-        # binding.pry
         erb :'products/new'
     end   
 
     get '/products/search' do
         erb :'products/search'
+    end
+
+    get '/products/edit' do 
+        redirect_if_not_logged_in
+        @user_products = current_user.products.select(:id, :name, :category, :subcategory)
+        erb :'products/edit'
     end
 
     post '/search' do
@@ -44,18 +48,7 @@ class ProductsController < ApplicationController
             redirect to "/products/#{new_product.slug}"
         end
     end
-
-    get '/products/success' do
-        redirect_if_not_logged_in
-        @last_product = Product.find(current_user.user_products.last.product_id).name
-        erb :'products/success', :layout => false
-    end
     
-    get '/products/edit' do 
-        redirect_if_not_logged_in
-        @user_products = current_user.products.select(:id, :name, :category, :subcategory)
-        erb :'products/edit'
-    end
 
     get '/products/:slug' do
         @product = Product.find_by_slug(params[:slug])
@@ -87,7 +80,7 @@ class ProductsController < ApplicationController
     helpers do
         def redirect_if_not_owner(product)
             if product.user != current_user
-                flash[:message] = "Please don't steal someone else's stuff!"
+                flash[:warning] = "Please don't steal someone else's stuff!"
                 redirect '/products'
             end
         end

@@ -1,8 +1,21 @@
+<style>
+a {
+  color: blue;
+  text-decoration: none;
+}
+</style>
 
-Based on your inventory, you can make <%= @user_drinks.size %> drinks from our database! 
-Click on a drink to get more information and instructions on how to make it.
-<% @user_drinks.each do |drink| %>
-    <li><a href="/drinks/<%= drink.slug %>"><%= drink.name %></a></li>   
-<% end %>
+<h3>Drinks Home</h3>
+    <% if !empty_recipe_book %>
+        <p>Based on your inventory, you can make <%= @user_drinks.size %> drink(s) from our database!</p> 
+        <p>Click on a drink to get more information and instructions on how to make it.<p>
+        <% @user_drinks.each do |drink| %>
+            <li><a href="/drinks/<%= drink.slug %>"><%= drink.name %></a></li>   
+        <% end %>
+    <% else %>
+        <p>A bar needs drinks!</p>
+        <p><a href="/products/new" class="btn btn-primary">Add some products</a> so you can get some recipes!</p>
+    <% end %>
 
-<%= @random_drink.name %>
+<a href="/drinks/new">Create a New Drink</a><br>
+<a href="/drinks/search">Search for a Specific Drink</a>

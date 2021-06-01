@@ -53,6 +53,9 @@ class ApplicationController < Sinatra::Base
             !!@user_products.empty?
         end
         
+        def empty_recipe_book
+            !!@user_drinks.empty?
+        end
     end
 
 end

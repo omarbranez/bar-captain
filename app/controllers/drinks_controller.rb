@@ -2,9 +2,9 @@ class DrinksController < ApplicationController
 
     get '/drinks' do
         redirect_if_not_logged_in
-        # also want to see if any changes were made before we query again
         @user_drinks = current_user.drinks
-        @random_drink = Drink.offset(rand(556)).first
+        # @random_drink = Drink.offset(rand(556)).first
+        # will implement later
         erb :'drinks/index'
     end
     
@@ -21,7 +21,7 @@ class DrinksController < ApplicationController
         @products = Product.select(:id, :name, :category, :subcategory)
         @products_first = @products.where(category: "Liquor")
         @products_second = @products.where(category: "Mixer")
-        # will add more
+        # will add more fields
         erb :'drinks/new'
     end
 
@@ -62,8 +62,8 @@ class DrinksController < ApplicationController
     end
     
     get '/drinks/:slug/edit' do
+        redirect_if_logged_in
         @drink = Drink.find_by_slug(params[:slug])
-        # binding.pry
         if user_is_also_author
             @drink_types = Drink.select(:drink_type).distinct.order(:drink_type)
             @glass_types = Drink.select(:glass).distinct.order(:glass)
@@ -135,31 +135,24 @@ class DrinksController < ApplicationController
         end
     
         def possible_drinks
-            Drink.all.select { |drink| (drink.products.ids - user_product_ids).empty?}
-        # using ids only due to speed
-        # this returns an array of drink ids
-        # removed need for similar, thanks to backlinks        
+            Drink.all.select { |drink| (drink.products.ids - user_product_ids).empty?}     
         end
 
         def makeable_drink_check
             @drink.products - current_user.products
         end
     
-        def makeable_drink_validation # ouch
+        def makeable_drink_validation 
             if makeable_drink_check.empty?
                 @makeable = "True"
                 if !current_user.user_drinks.where(drink_id: @drink.id).exists?
                     current_user.user_drinks.find_or_create_by(drink_id: @drink.id)
-        # if the difference of collections is zero BUT the drink doesn't exist in the user's collection, aka they added something in products and didn't hit the generate button
-        # add to the collection
                 end
             else
                 @makeable = "False"
                 @missing_products = makeable_drink_check
                 if current_user.user_drinks.where(drink_id: @drink.id).exists?
                     current_user.user_drinks.find_by(drink_id: @drink.id).delete
-        # if the difference is not zero BUT the drink exists in the user's collection, aka they deleted stuff in products
-        # remove it from the collection
                 end
             end
         end

@@ -16,20 +16,19 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="position:absolute; top:0px; left:0px; height:10%; right:0px;overflow:hidden;">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="#!">Bar Captain</a>
+                <a class="navbar-brand">Bar Captain</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active">
                             <a class="nav-link" href="/">
                                 Home
-                                <span class="sr-only">(current)</span>
+                                <span class="sr-only"></span>
                             </a>
                         </li>
                         <% if logged_in? %>
-                        <li class="nav-item"><a class="nav-link" href="/products">My Bar</a></li> 
-                        <li class="nav-item"><a class="nav-link" href="/drinks">My Drinks</a></li> 
-                        <li class="nav-item"><a class="nav-link" href="/menu">All Drinks</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/products"><%= current_user.username %>'s Products</a></li> 
+                        <li class="nav-item"><a class="nav-link" href="/drinks"><%= current_user.username %>'s Drinks</a></li> 
                         <li class="nav-item"><a class="nav-link" href="/logout">Log Out</a></li> 
                         <% else %>
                         <li class="nav_item"><a class="nav-link" href="/login">Log In</a></li> 

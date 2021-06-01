@@ -1,23 +1,29 @@
-<table class="table" id="results">
-<thead>
-<tr>
-  <th>Name</th>
-  <th>Primary Ingredient</th>
-  <th>Primary Liquor Type</th>
-  <th>Link</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<% if @drinks.present? %>
-<% @drinks.each do |drink| %>
-    <td><%= drink.name %></td>
-    <td><%= drink.products.first.name %></td> 
-    <td><%= drink.products.first.subcategory %></td>
-    <td><a href="/drinks/<%= drink.slug %>"><%= drink.name %> Info Page</a></td>
-</tr>
-<% end %>
-<% end %>
+<style>
+a {
+  color: blue;
+  text-decoration: none;
+}
+</style>
 
-</tbody>
+<table class="table" id="results">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Primary Ingredient</th>
+      <th>Primary Liquor Type</th>
+      <th>Link</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <% if @drinks.present? %>
+      <% @drinks.each do |drink| %>
+      <td><%= drink.name %></td>
+      <td><%= drink.products.first.name %></td> 
+      <td><%= drink.products.first.subcategory %></td>
+      <td><a href="/drinks/<%= drink.slug %>"><%= drink.name %> Info Page</a></td>
+    </tr>
+      <% end %>
+    <% end %>
+  </tbody>
 </table>

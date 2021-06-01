@@ -8,6 +8,7 @@
 
 a {
   color: blue;
+  text-decoration: none;
 }
 
 .row {
@@ -34,50 +35,50 @@ li {
 }
 </style>
 
-    <div class="row">
-        <div class="column">
-            <div class="card">
-                <div class="container">
-                    <h3><b><%= @product.name %></b></h3>
-                    <p><%= @product.subcategory %></p>
-                    <% if @product.description %>
-                        <h4>Description:</h4>
-                        <%= @product.description %></li><br>
-                    <% else %>
-                        <p><i>No description has been written for <%= @product.name %>.</i><br>
-                    <% end %>
-                    <br>
-                    <p>This product is used to make the following drinks:</p>
-                    <% @drinks.each do |drink| %>
-                        <li> <a href="/drinks/<%= drink.drink.slug %>"><%= drink.drink.name %></a></li>
-                    <% end %>
-                </div>
+<div class="row">
+    <div class="column">
+        <div class="card">
+            <div class="container">
+                <h3><b><%= @product.name %></b></h3>
+                <p><%= @product.subcategory %></p>
+                <% if @product.description %>
+                    <h4>Description:</h4>
+                    <%= @product.description %></li><br>
+                <% else %>
+                    <p><i>No description has been written for <%= @product.name %>.</i><br>
+                <% end %>
+                <br>
+                <p>This product is used to make the following drinks:</p>
+                <% @drinks.each do |drink| %>
+                    <li> <a href="/drinks/<%= drink.drink.slug %>"><%= drink.drink.name %></a></li>
+                <% end %>
             </div>
         </div>
-        <div class="column">
-            <div class="sticky">
-                <div class="card">
-                    <div class="container" >   
-                        <% if @owned == "True" %>
-                            <h4>This product is currently in your collection.</h4>
-                            <h4>Would you like to remove it?</h4>
-                            <form action="/products/<%= @product.id %>" method="POST">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <input type="hidden" name="origin" value="show">
-                                <button type="submit" class="btn btn-danger"> Delete <%= @product.name %></button>
-                            </form>
-                        <% else %>
-                            <h3>Would you like to add this to your inventory?</h3>
-                            <form action="/products" method="POST">
-                                <button type="submit" class="btn btn-primary" value="<%= @product.id %>" name="id">Add <%= @product.name %></button>
-                            </form>
-                        <% end %>
-                    </div>
+    </div>
+    <div class="column">
+        <div class="sticky">
+            <div class="card">
+                <div class="container" >   
+                    <% if @owned == "True" %>
+                        <h4>This product is currently in your collection.</h4>
+                        <h4>Would you like to remove it?</h4>
+                        <form action="/products/<%= @product.id %>" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="origin" value="show">
+                            <button type="submit" class="btn btn-danger"> Delete <%= @product.name %></button>
+                        </form>
+                    <% else %>
+                        <h3>Would you like to add this to your inventory?</h3>
+                        <form action="/products" method="POST">
+                            <button type="submit" class="btn btn-primary" value="<%= @product.id %>" name="id">Add <%= @product.name %></button>
+                        </form>
+                    <% end %>
                 </div>
             </div>
         </div>
     </div>
-    <br>               
+</div>
+            
 
 
 

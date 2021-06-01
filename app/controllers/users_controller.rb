@@ -13,11 +13,11 @@ class UsersController < ApplicationController
 
     post '/users' do
         if params[:username] != "" && params[:password] != ""
-            @user = User.new(:username => params[:username], :password => params[:password])
-            @user.save
-            session[:user_id] = @user.id 
+            user = User.new(:username => params[:username], :password => params[:password])
+            user.save
+            session[:user_id] = user.id 
             flash[:message] = "Successfully Registered!"
-            redirect to "/users/#{@user.slug}"
+            redirect to "/users/#{user.slug}"
         else
             redirect '/new'
         end
