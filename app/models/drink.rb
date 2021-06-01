@@ -1,4 +1,5 @@
 class Drink < ActiveRecord::Base 
+    validates_uniqueness_of(:name)
     has_many :user_drinks
     has_many :users, through: :user_drinks
     has_many :drink_products

@@ -1,15 +1,33 @@
-<h3>Edit a Drink</h3>
+<h3>Edit This Drink</h3>
 
-<%= @drink.name %><br>
-<%= @drink.drink_type %><br>
-<%= @drink.glass %><br>
-<% @drink_products.each do |dp| %>
-    <% unless dp.product_id == 0 %>
-        <%= dp.product.name %><br>
-        <%= dp.quantity %> <br>
+<form action="/drinks/<%= @drink.slug %>" method="POST">
+    <input type="hidden" name="_method" value="PATCH">
+    <input type="text" name="drink[name]" maxlength="40" placeholder="<%= @drink.name %>" style="width:50%"><br><br>
+    <select class="selectpicker show-tick" title="<%= @drink.drink_type %>" data-width="50%" name="drink[type]">
+    <% @drink_types.each do |drink| %>
+            <option value="<%= drink.drink_type %>"><%= drink.drink_type %></option>
+        <% end %>
+    </select><br><br>
+    <select class="selectpicker show-tick" title="<%= @drink.glass %>" data-width="50%" name="drink[glass]">
+        <% @glass_types.each do |drink| %>
+            <option value="<%= drink.glass %>"><%= drink.glass %></option>
+        <% end %>
+    </select><br><br>
+    <select class="selectpicker show-tick" data-live-search="true" title="<%= @drink.products.first.name %>" data-width="50%" name="drink[ingredient1]">  
+    <% @products_first.each do |product| %>
+        <option data-subtext="<%= product.subcategory %>" value="<%= product.id %>"><%= product.name %></option>
     <% end %>
-<% end %>
-<%= @drink.instructions %><br>
-<%= @drink.photo_url %><br>
+    </select><br><br>
+    <input type="text" name="drink[quantity_1]" maxlength="30" placeholder="<%= @drink_qty_1 %>" style="width:50%"><br><br>
+    <select class="selectpicker show-tick" data-live-search="true" title="<%= @drink.products.second.name %>" data-width="50%" name="drink[ingredient2]">  
+    <% @products_second.each do |product| %>
+        <option data-subtext="<%= product.subcategory %>" value="<%= product.id %>"><%= product.name %></option>
+    <% end %>
+    </select><br><br>
+    <input type="text" name="drink[quantity_2]" maxlength="30" placeholder="<%= @drink_qty_2 %>" style="width:50%"><br><br>
+    <input type="text" name="drink[photo_url]" placeholder="<%= @drink.photo_url %>" style="width:50%"><br><br>
+    <input type="text" name="drink[instructions]" placeholder="How do you make it?" style="width:50%"></><br><br>
+    <button id="button-submit" type="submit" class="btn btn-primary">Submit Changes to Database</button>
+</form>
 
 

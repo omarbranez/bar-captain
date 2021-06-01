@@ -63,8 +63,15 @@ class DrinksController < ApplicationController
     
     get '/drinks/:slug/edit' do
         @drink = Drink.find_by_slug(params[:slug])
+        # binding.pry
         if user_is_also_author
-            @drink_products = DrinkProduct.select("product_id, quantity").where(drink_id: @drink.id)
+            @drink_types = Drink.select(:drink_type).distinct.order(:drink_type)
+            @glass_types = Drink.select(:glass).distinct.order(:glass)
+            products = Product.select(:id, :name, :category, :subcategory)
+            @products_first = products.where(category: "Liquor")
+            @products_second = products.where(category: "Mixer")
+            @drink_qty_1 = DrinkProduct.where(drink_id: @drink.id).first.quantity
+            @drink_qty_2 = DrinkProduct.where(drink_id: @drink.id).second.quantity
             erb :'drinks/edit'
         else
             redirect_if_not_author
@@ -72,17 +79,45 @@ class DrinksController < ApplicationController
     end
 
     patch '/drinks/:slug' do
-        validate_author_logged_in
-        drink.update(params)
-        redirect "/drinks/#{drink.slug}"
-    end
+        @drink = Drink.find_by_slug(params[:slug])
+        drink_products = DrinkProduct.where(drink_id: @drink.id)
+        if !user_is_also_author
+            redirect_if_not_author
+        else
+            if !params[:drink][:name].empty?
+                @drink.update(name: params[:drink][:name])
+            end
+            if !params[:drink][:type].empty?
+                @drink.update(drink_type: params[:drink][:type])
+            end
+            if !params[:drink][:glass].empty? 
+                @drink.update(glass: params[:drink][:glass])
+            end
+            if !params[:drink][:ingredient1].empty?
+                drink_products.first.update(product_id: params[:drink][:ingredient1])    
+            end
+            if !params[:drink][:quantity_1].empty?
+                drink_products.first.update(quantity: params[:drink][:quantity_1])
+            end
+            if !params[:drink][:ingredient2].empty?
+                drink_products.second.update(product_id: params[:drink][:ingredient2])   
+            end
+            if !params[:drink][:quantity_2].empty?
+                drink_products.second.update(quantity: params[:drink][:quantity_2])
+            end
+            if !params[:drink][:photo_url].empty?
+                @drink.update(photo_url: params[:drink][:photo_url])
+            end
+        end
+        redirect "/drinks/#{@drink.slug}"
+    end            
 
     delete '/drinks/:slug' do
         @drink = Drink.find_by_slug(params[:slug])
         drink_products = DrinkProduct.where(drink_id: @drink.id)
         if user_is_also_author
             @drink.delete
-            drink_products.delete
+            drink_products.delete_all
             redirect '/drinks'
         else 
             redirect_if_not_author
@@ -137,7 +172,6 @@ class DrinksController < ApplicationController
 
         def drink_author
             User.find(@drink.user_id).username
-            # miiiiight have to change those relationships
         end
         
         def user_is_also_author
