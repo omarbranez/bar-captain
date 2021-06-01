@@ -3,10 +3,6 @@ class ProductsController < ApplicationController
     get '/products' do
         redirect_if_not_logged_in
         @user_products = current_user.products.select(:name).order(:name)
-        # @random_product = Product.offset(rand(489)).first # this is 3x as fast as Product.all.order(Arel.sql('random()'))
-        #but might have to be Product.offset(rand(Product.select(:id).count) if we add new products (or drinks, later)
-        # or find_one()
-        # will implement at later time
         erb :'products/index'
     end
 

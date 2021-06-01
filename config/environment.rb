@@ -13,6 +13,5 @@ ActiveRecord::Base.establish_connection(
 require './app/controllers/application_controller'
 require 'sinatra/flash'
 require 'sinatra/respond_with'
-# require 'sinatra/contrib' # doesn't play nice with rake
 
 require_all 'app'

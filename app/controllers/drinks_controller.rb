@@ -3,8 +3,6 @@ class DrinksController < ApplicationController
     get '/drinks' do
         redirect_if_not_logged_in
         @user_drinks = current_user.drinks
-        # @random_drink = Drink.offset(rand(556)).first
-        # will implement later
         erb :'drinks/index'
     end
     
@@ -21,7 +19,6 @@ class DrinksController < ApplicationController
         @products = Product.select(:id, :name, :category, :subcategory)
         @products_first = @products.where(category: "Liquor")
         @products_second = @products.where(category: "Mixer")
-        # will add more fields
         erb :'drinks/new'
     end
 

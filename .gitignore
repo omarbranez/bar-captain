@@ -2,3 +2,4 @@
 /config/database.yml
 /db/development.sqlite
 scratchpad
+/db/seeds.rb
