@@ -35,6 +35,9 @@ li {
 }
 </style>
 
+<% if @add_link == "true" %>
+<p>Would you like to add more products? <a href="/products/new">Return to search.</a></p>
+<% end %>
 <div class="row">
     <div class="column">
         <div class="card">

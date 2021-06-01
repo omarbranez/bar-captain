@@ -26,6 +26,7 @@ a {
     <td><a href="/products/<%= product.slug %>"><%= product.name %> Info Page</a></td>
       <% if @new_button == "true" %>
         <td><form action="/products" method="POST">
+              <input type="hidden" name="origin" value="new">
               <button type="submit" class="btn btn-primary" value="<%= product.id %>" name="id">Add <%= product.name %></button>
             </form></td>
       <% end %>

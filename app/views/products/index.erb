@@ -6,12 +6,13 @@ a {
 </style>
 
 <h3>Products Home</h3>
+<% unless empty_inventory %>
 <p>Here is your current inventory. Click on the name to get more information!</p>
 <% @user_products.each do |product| %>
     <li><a href="/products/<%= product.slug %>"><%= product.name %></a></li>
     <% end %>
-<% if empty_inventory %>
-    <p>A bar without booze? Go stock up!</p>
+<% else %>
+    <p>A bar without booze? <a href="/products/new">Go stock up!</a></p>
 <% end %>
 
 <% unless empty_inventory %>

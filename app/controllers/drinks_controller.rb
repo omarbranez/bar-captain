@@ -46,7 +46,7 @@ class DrinksController < ApplicationController
             drink.save
             new_drink_product_1 = DrinkProduct.new(:drink_id => Drink.last.id, :product_id => params[:drink][:ingredient1], :quantity => params[:drink][:quantity_1])
             new_drink_product_1.save
-            new_drink_product_2 = DrinkProduct.new(:drink_id => Drink.last.id, :product_id => params[:drink][:ingredient1], :quantity => params[:drink][:quantity_2])
+            new_drink_product_2 = DrinkProduct.new(:drink_id => Drink.last.id, :product_id => params[:drink][:ingredient2], :quantity => params[:drink][:quantity_2])
             new_drink_product_2.save
             redirect "/drinks/#{drink.slug}"
         end
@@ -62,7 +62,7 @@ class DrinksController < ApplicationController
     end
     
     get '/drinks/:slug/edit' do
-        redirect_if_logged_in
+        redirect_if_not_logged_in
         @drink = Drink.find_by_slug(params[:slug])
         if user_is_also_author
             @drink_types = Drink.select(:drink_type).distinct.order(:drink_type)

@@ -31,6 +31,8 @@ class ProductsController < ApplicationController
         end
         if request.referer.last(3) == "new"
             @new_button = "true"
+        else
+            @new_button = "false"
         end
         erb :'result', :layout => false
     end
@@ -54,6 +56,9 @@ class ProductsController < ApplicationController
         @product = Product.find_by_slug(params[:slug])
         @drinks = DrinkProduct.select(:drink_id).where(product_id: @product.id)
         if logged_in?
+            if params[:origin] == "new"
+                @add_link = "True"      
+            end      
             if current_user.user_products.where(product_id: @product.id).exists?
                 @owned = "True"
             else
