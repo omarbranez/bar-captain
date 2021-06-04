@@ -51,7 +51,8 @@ class DrinksController < ApplicationController
 
     get '/drinks/:slug' do
         @drink = Drink.find_by_slug(params[:slug])
-        @drink_products = DrinkProduct.select("product_id, quantity").where(drink_id: @drink.id)
+        @drink_products = @drink.drink_products
+        # DrinkProduct.select("product_id, quantity").where(drink_id: @drink.id)
         if !!logged_in?
             makeable_drink_validation
         end

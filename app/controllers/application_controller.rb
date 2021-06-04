@@ -19,7 +19,8 @@ class ApplicationController < Sinatra::Base
         erb :'index'
     end
 
-    error do
+    not_found do
+        status 404
         erb :'failure'
     end
 

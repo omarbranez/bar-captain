@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-    has_secure_password
+    has_secure_password 
     validates_uniqueness_of(:username)
     has_many :user_products
     has_many :products, through: :user_products
